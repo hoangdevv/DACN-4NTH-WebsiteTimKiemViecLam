@@ -25,8 +25,10 @@
       - Đánh giá mức độ tương thích của ứng viên với công ty
       - ....
 - Sơ đồ ERD:
+
   
-    ![image](https://github.com/user-attachments/assets/1f97d60b-9a8b-4bfc-b9c2-50ab4b71542b)
+    ![image](https://github.com/user-attachments/assets/7f078e0a-8be8-4203-8275-21ff4a112361)
+
 
 - Usecase tổng quát:
   

@@ -1,4 +1,4 @@
-# DACN-NTH-WebsiteTimKiemViecLam
+  # DACN-NTH-WebsiteTimKiemViecLam
 - Đồ án chuyên ngành  : Website Tìm Kiếm Việc Làm
 - Thực hiện bởi       : Nhóm 4NTH : Ngô Văn Huy Hoàng - Nguyễn Đức Thắng - Đinh Hoàng Thanh Phong
 - Gv hướng dẫn        : Thầy Trần Đăng Khoa
@@ -26,10 +26,17 @@
       - ....
 - Sơ đồ ERD:
 
-  
+       
     ![image](https://github.com/user-attachments/assets/7f078e0a-8be8-4203-8275-21ff4a112361)
 
 
 - Usecase tổng quát:
   
+  
     ![image](https://github.com/user-attachments/assets/8d5b5e23-792d-4906-a178-2f5bf9546e5c)
+
+
+- Các mô hình diagram:
+
+    [MÔ HÌNH BẢN VẼ WEBSITE JOBFINDER.docx](https://github.com/user-attachments/files/17458912/MO.HINH.B.N.V.WEBSITE.JOBFINDER.docx)
+

@@ -27,7 +27,8 @@
 - Sơ đồ ERD:
 
        
-    ![image](https://github.com/user-attachments/assets/7f078e0a-8be8-4203-8275-21ff4a112361)
+    ![image](https://github.com/user-attachments/assets/310c83e6-a23e-4349-a8ba-5865fa12c70a)
+
 
 
 - Usecase tổng quát:

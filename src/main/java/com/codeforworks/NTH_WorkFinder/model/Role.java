@@ -10,15 +10,15 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "roles")
+@Table(name = "role")
 public class Role extends Base{
     @Id
     @Column(name = "id_role", nullable = false, length = 10)
     private String idRole;
 
-    @Column(name = "role_name", length = 45)
     private String roleName;
+    private String description;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    private Set<Account> accounts;
 }

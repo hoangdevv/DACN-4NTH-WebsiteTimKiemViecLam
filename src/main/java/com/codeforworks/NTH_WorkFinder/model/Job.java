@@ -6,34 +6,83 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "jobs")
-public class Job {
+@Table(name = "job")
+public class Job extends Base {
     @Id
     @Column(name = "id_job", nullable = false, length = 10)
     private String idJob;
 
     @ManyToOne
-    @JoinColumn(name = "employer_id")
+    @JoinColumn(name = "id_employer", nullable = false)
     private Employer employer;
 
-    @Column(name = "title", length = 45)
+    @ManyToOne
+    @JoinColumn(name = "id_profession")
+    private Profession profession;
+
+    @ManyToOne
+    @JoinColumn(name = "id_industry")
+    private Industry industry;
+
     private String title;
-
-    @Column(name = "location", length = 45)
+    private String description;
     private String location;
-
-    @Column(name = "salary")
     private Long salary;
+    private Date expiryDate;
 
-    @Column(name = "experience_level", columnDefinition = "ENUM")
-    private String experienceLevel;
+    @OneToMany(mappedBy = "job")
+    private List<JobSkill> jobSkills;
 
-    @Column(name = "job_type", columnDefinition = "ENUM")
-    private String jobType;
+    @OneToMany(mappedBy = "job")
+    private List<Application> applications;
 
+    @Enumerated(EnumType.STRING)
+    private JobLevel jobLevel;
+
+    @Enumerated(EnumType.STRING)
+    private ExperienceLevel experienceLevel;
+
+    @Enumerated(EnumType.STRING)
+    private EducationLevel educationLevel;
+
+    @Enumerated(EnumType.STRING)
+    private JobType jobType;
+
+    public enum JobLevel {
+        Internship, //thực tập
+        Graduated, //đã tốt nghiệp
+        Personnel, //nhân viên
+        Managerment, //quản lý
+        President //giám đốc
+    }
+
+    public enum ExperienceLevel {
+        NoExperience, //chưa kinh nghiệm
+        Under1Year,
+        Between12Year, //1-2năm
+        Between25Year,
+        Between510Year,
+        Over10Year
+    }
+
+    public enum EducationLevel{
+        HighSchool, //THPT
+        University,
+        Master, //thạc sĩ
+        Doctor //tiến sĩ
+    }
+
+    public enum JobType{
+        FullTime,
+        PartTime,
+        Seasonal //thời vụ
+    }
 }

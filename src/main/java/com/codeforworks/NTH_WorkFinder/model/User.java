@@ -3,6 +3,7 @@ package com.codeforworks.NTH_WorkFinder.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -10,28 +11,19 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User extends Base{
     @Id
     @Column(name = "id_user", nullable = false, length = 10)
     private String idUser;
 
-    @Column(name = "email", nullable = false, length = 45)
-    private String email;
+    @OneToOne
+    @JoinColumn(name = "id_account", nullable = false)
+    private Account account;
 
-    @Column(name = "password", nullable = false, length = 45)
-    private String password;
+    @OneToOne(mappedBy = "user")
+    private Candidate candidate;
 
-    @Column(name = "full_name", length = 45)
-    private String fullName;
-
-    @Column(name = "phone", length = 15)
-    private String phone;
-
-    @ManyToMany
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "id_user"),
-            inverseJoinColumns = @JoinColumn(name = "id_role"))
-    private Set<Role> roles;
+    @OneToMany(mappedBy = "user")
+    private List<Notification> notifications;
 }

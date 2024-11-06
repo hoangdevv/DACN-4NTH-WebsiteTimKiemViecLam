@@ -27,7 +27,7 @@
 - Sơ đồ ERD:
 
        
-    ![image](https://github.com/user-attachments/assets/310c83e6-a23e-4349-a8ba-5865fa12c70a)
+    ![image](https://github.com/user-attachments/assets/9bbea11c-3176-42b9-8bb6-4da60d2f1df5)
 
 
 

@@ -17,13 +17,21 @@ import java.util.Set;
 @Entity
 @Table(name = "employer")
 public class Employer extends Base{
-    @Id
-    @Column(name = "id_employer", nullable = false, length = 10)
-    private String idEmployer;
-
+    @Column(name = "code", unique = true, nullable = false, updatable = false)
+    private String code;
+    @PrePersist
+    protected void onPersist() {
+        if (this.code == null) {
+            this.code = "EMP-" + String.format("%05d", this.getId()); // Ví dụ: CAND-00001
+        }
+    }
     @OneToOne
     @JoinColumn(name = "id_account", nullable = false)
     private Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "id_industry", nullable = false)
+    private Industry industry; // Ngành công nghiệp của nhà tuyển dụng
 
     @Column(name = "company_name", length = 45)
     private String companyName;
@@ -32,6 +40,7 @@ public class Employer extends Base{
     private String companyWebsite;
     private String companyPhone;
     private String companyDescription;
+    private String location;
 
     @OneToMany(mappedBy = "employer")
     private List<Job> jobs;

@@ -13,9 +13,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "candidate_skill")
 public class CandidateSkill {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "candidate_id", nullable = false)

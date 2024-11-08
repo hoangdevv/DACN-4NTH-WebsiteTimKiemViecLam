@@ -15,9 +15,6 @@ import java.util.Date;
 @Entity
 @Table(name = "payment")
 public class Payment extends Base{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPayment;
 
     @ManyToOne
     @JoinColumn(name = "subscription_id", nullable = false)

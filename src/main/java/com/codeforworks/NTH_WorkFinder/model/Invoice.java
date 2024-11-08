@@ -15,15 +15,20 @@ import java.util.Date;
 @Entity
 @Table(name = "invoice")
 public class Invoice extends Base{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idInvoice;
+    @Column(name = "code", unique = true, nullable = false, updatable = false)
+    private String code;
+    @PrePersist
+    protected void onPersist() {
+        if (this.code == null) {
+            this.code = "HD-" + String.format("%05d", this.getId());
+        }
+    }
 
     @OneToOne
     @JoinColumn(name = "id_payment", nullable = false)
     private Payment payment; // Liên kết 1-1 với Payment
 
-    private String invoiceNumber; // Số hóa đơn
+//    private String invoiceNumber; // Số hóa đơn
 
     private Double totalAmount;
 

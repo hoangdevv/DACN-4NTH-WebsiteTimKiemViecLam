@@ -15,15 +15,9 @@ import java.util.Set;
 @Entity
 @Table(name = "package")
 public class Package extends Base{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_package")
-    private Integer idPackage;
 
     private String packageName;
 
-    @Setter
-    @Getter
     @Column(nullable = false)
     private Integer duration; // Thời hạn của gói tính theo số ngày
 

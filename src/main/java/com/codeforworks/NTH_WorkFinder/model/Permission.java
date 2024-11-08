@@ -15,10 +15,10 @@ import java.util.Set;
 @Entity
 @Table(name = "permission")
 public class Permission extends Base{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_permission")
-    private Integer idPermission;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "id_permission")
+//    private Integer idPermission;
 
     private String permissionName;
     private String description;

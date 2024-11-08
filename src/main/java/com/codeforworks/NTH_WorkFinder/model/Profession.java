@@ -15,9 +15,9 @@ import java.util.List;
 @Entity
 @Table(name = "profession")
 public class Profession {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idProfession;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long idProfession;
 
     private String name; // Tên ngành nghề
     private String description;

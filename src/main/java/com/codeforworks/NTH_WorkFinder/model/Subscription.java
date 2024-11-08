@@ -16,9 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "subscriptions")
 public class Subscription {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idSubscription;
+
 
     @ManyToOne
     @JoinColumn(name = "employer_id", nullable = false)

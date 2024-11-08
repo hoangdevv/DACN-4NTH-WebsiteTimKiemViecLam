@@ -1,9 +1,17 @@
 package com.codeforworks.NTH_WorkFinder.service;
 
+import com.codeforworks.NTH_WorkFinder.dto.subscription.SubscriptionRequestDTO;
+import com.codeforworks.NTH_WorkFinder.dto.subscription.SubscriptionResponseDTO;
 import com.codeforworks.NTH_WorkFinder.model.Employer;
 import com.codeforworks.NTH_WorkFinder.model.Package;
 import com.codeforworks.NTH_WorkFinder.model.Subscription;
 
+import java.util.List;
+
 public interface ISubscriptionService {
-    Subscription createSubscription(Employer employer, Package aPackage);
+    SubscriptionResponseDTO createSubscription(SubscriptionRequestDTO subscriptionRequestDTO);
+    SubscriptionResponseDTO getSubscriptionById(Long id);
+    List<SubscriptionResponseDTO> getAllSubscriptions();
+    SubscriptionResponseDTO renewSubscription(Long id, Integer extraDays);
+    void cancelSubscription(Long id);
 }

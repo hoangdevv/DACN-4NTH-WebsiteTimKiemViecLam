@@ -15,15 +15,18 @@ import java.util.List;
 @Entity
 @Table(name = "industry")
 public class Industry extends Base{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idIndustry;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long idIndustry;
 
     private String name;
     private String description;
 
     @OneToMany(mappedBy = "industry")
     private List<Profession> professions; // Danh sách các nghề nghiệp thuộc ngành này
+
+    @OneToMany(mappedBy = "industry")
+    private List<Employer> employers; // Danh sách các nhà tuyển dụng thuộc ngành này
 
     @OneToMany(mappedBy = "industry")
     private List<Job> jobs;

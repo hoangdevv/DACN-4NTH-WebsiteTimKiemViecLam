@@ -15,9 +15,9 @@ import java.util.Date;
 @Entity
 @Table(name = "interview")
 public class Interview extends Base{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idInterview;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long idInterview;
 
     @ManyToOne
     @JoinColumn(name = "id_application", nullable = false)

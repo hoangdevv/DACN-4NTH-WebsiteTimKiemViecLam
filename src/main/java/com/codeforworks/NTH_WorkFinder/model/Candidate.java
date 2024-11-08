@@ -16,9 +16,14 @@ import java.util.List;
 @Entity
 @Table(name = "candidate")
 public class Candidate extends Base{
-    @Id
-    @Column(name = "id_candidate", nullable = false, length = 10)
-    private String idCandidate;
+    @Column(name = "code", unique = true, nullable = false, updatable = false)
+    private String code;
+    @PrePersist
+    protected void onPersist() {
+        if (this.code == null) {
+            this.code = "CAND-" + String.format("%05d", this.getId());
+        }
+    }
 
     @OneToOne
     @JoinColumn(name = "id_user", nullable = false)

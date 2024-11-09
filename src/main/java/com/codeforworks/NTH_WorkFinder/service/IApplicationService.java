@@ -7,9 +7,14 @@ import com.codeforworks.NTH_WorkFinder.dto.application.ApplicationStatusUpdateDT
 import java.util.List;
 
 public interface IApplicationService {
+
     ApplicationResponseDTO getApplicationById(Long id);
+
     List<ApplicationResponseDTO> getAllApplications();
+
     ApplicationResponseDTO createApplication(ApplicationRequestDTO applicationRequestDTO);
+
     ApplicationResponseDTO updateApplicationStatus(Long id, ApplicationStatusUpdateDTO statusUpdateDTO);
+
     void deleteApplication(Long id);
 }

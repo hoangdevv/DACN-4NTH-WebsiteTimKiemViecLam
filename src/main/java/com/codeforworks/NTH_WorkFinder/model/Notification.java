@@ -13,9 +13,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "notification")
 public class Notification extends Base{
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long idNotification;
+
 
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)

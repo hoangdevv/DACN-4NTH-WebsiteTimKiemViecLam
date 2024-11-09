@@ -16,9 +16,6 @@ import java.util.Set;
 @Entity
 @Table(name = "skill")
 public class Skill extends Base{
-//    @Id
-//    @Column(name = "id_skill", length = 10)
-//    private String idSkill;
 
     private String skillName;
 

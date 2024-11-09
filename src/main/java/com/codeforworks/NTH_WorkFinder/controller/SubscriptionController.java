@@ -16,7 +16,7 @@ public class SubscriptionController {
     @Autowired
     private ISubscriptionService subscriptionService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<SubscriptionResponseDTO> createSubscription(@RequestBody SubscriptionRequestDTO subscriptionRequestDTO) {
         SubscriptionResponseDTO createdSubscription = subscriptionService.createSubscription(subscriptionRequestDTO);
         return ResponseEntity.ok(createdSubscription);
@@ -28,7 +28,7 @@ public class SubscriptionController {
         return ResponseEntity.ok(subscription);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<SubscriptionResponseDTO>> getAllSubscriptions() {
         List<SubscriptionResponseDTO> subscriptions = subscriptionService.getAllSubscriptions();
         return ResponseEntity.ok(subscriptions);

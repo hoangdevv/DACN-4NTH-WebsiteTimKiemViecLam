@@ -10,12 +10,20 @@ import com.codeforworks.NTH_WorkFinder.dto.subscription.SubscriptionResponseDTO;
 import java.util.List;
 
 public interface IEmployerService {
+
     void registerEmployer(EmployerSignupRequestDTO dto);
+
     LoginResponseDTO loginEmployer(LoginRequestDTO dto);
+
     EmployerResponseDTO getEmployerById(Long id);
+
     List<EmployerResponseDTO> getAllEmployers();
+
     EmployerResponseDTO createEmployer(EmployerRequestDTO employerRequestDTO);
+
     EmployerResponseDTO updateEmployer(Long id, EmployerRequestDTO employerRequestDTO);
+
     void deleteEmployer(Long id);
+
     List<SubscriptionResponseDTO> getEmployerSubscriptions(Long employerId);
 }

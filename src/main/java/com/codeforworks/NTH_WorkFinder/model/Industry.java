@@ -15,9 +15,6 @@ import java.util.List;
 @Entity
 @Table(name = "industry")
 public class Industry extends Base{
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long idIndustry;
 
     private String name;
     private String description;

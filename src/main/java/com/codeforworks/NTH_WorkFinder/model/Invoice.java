@@ -28,8 +28,6 @@ public class Invoice extends Base{
     @JoinColumn(name = "id_payment", nullable = false)
     private Payment payment; // Liên kết 1-1 với Payment
 
-//    private String invoiceNumber; // Số hóa đơn
-
     private Double totalAmount;
 
     private Boolean isPaid; // Trạng thái thanh toán

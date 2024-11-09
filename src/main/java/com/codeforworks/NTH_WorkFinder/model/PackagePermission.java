@@ -15,9 +15,6 @@ import java.util.Date;
 @Entity
 @Table(name = "package_permission")
 public class PackagePermission {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "package_id", nullable = false)

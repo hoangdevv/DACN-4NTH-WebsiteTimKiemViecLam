@@ -46,6 +46,12 @@ public class ApplicationService implements IApplicationService {
 
     @Override
     public ApplicationResponseDTO createApplication(ApplicationRequestDTO applicationRequestDTO) {
+        // Kiểm tra trùng lặp ứng tuyển
+        if (applicationRepository.existsByCandidateIdAndJobId(
+                applicationRequestDTO.getCandidateId(), applicationRequestDTO.getJobId())) {
+            throw new RuntimeException("Ứng viên đã ứng tuyển công việc này rồi.");
+        }
+
         Application application = ApplicationMapper.INSTANCE.toApplicationEntity(applicationRequestDTO);
 
         // Tìm và thiết lập Candidate

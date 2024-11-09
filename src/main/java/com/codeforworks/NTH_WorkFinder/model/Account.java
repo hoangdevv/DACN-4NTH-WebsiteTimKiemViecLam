@@ -18,9 +18,6 @@ import java.util.Set;
 @Entity
 @Table(name = "account")
 public class Account extends Base{
-//    @Id
-//    @Column(name = "id_account",  nullable = false,length = 10)
-//    private String id;
 
     @Email(message = "Email phải hợp lệ")
     @Column(nullable = false, unique = true) // Email không được để trống và phải là duy nhất

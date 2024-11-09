@@ -13,9 +13,6 @@ import java.util.Set;
 @Entity
 @Table(name = "user")
 public class User extends Base{
-//    @Id
-//    @Column(name = "id_user", nullable = false, length = 10)
-//    private String idUser;
 
     @OneToOne
     @JoinColumn(name = "id_account", nullable = false)

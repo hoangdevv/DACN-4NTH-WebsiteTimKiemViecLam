@@ -36,9 +36,13 @@ public class SubscriptionService implements ISubscriptionService {
 
         // Lấy Employer và Package từ request
         Employer employer = employerRepository.findById(subscriptionRequestDTO.getEmployerId())
-                .orElseThrow(() -> new RuntimeException("Employer not found"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy Employer"));
         Package aPackage = packageRepository.findById(subscriptionRequestDTO.getPackageId())
-                .orElseThrow(() -> new RuntimeException("Package not found"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy Package"));
+        // Kiểm tra nếu Employer đã có đăng ký với gói này
+        if (subscriptionRepository.existsByEmployerAndAPackage(employer, aPackage)) {
+            throw new RuntimeException("Employer đã có đăng ký cho gói này.");
+        }
 
         // Thiết lập thông tin cho Subscription
         subscription.setEmployer(employer);
@@ -61,7 +65,7 @@ public class SubscriptionService implements ISubscriptionService {
     @Override
     public SubscriptionResponseDTO getSubscriptionById(Long id) {
         Subscription subscription = subscriptionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Subscription not found"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy Subscription"));
         return SubscriptionMapper.INSTANCE.toSubscriptionResponseDTO(subscription);
     }
 
@@ -76,7 +80,10 @@ public class SubscriptionService implements ISubscriptionService {
     @Override
     public SubscriptionResponseDTO renewSubscription(Long id, Integer extraDays) {
         Subscription subscription = subscriptionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Subscription not found"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy Subscription"));
+        if (extraDays <= 0) {
+            throw new RuntimeException("Số ngày gia hạn không hợp lệ.");
+        }
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(subscription.getEndDate());
@@ -90,7 +97,7 @@ public class SubscriptionService implements ISubscriptionService {
     @Override
     public void cancelSubscription(Long id) {
         Subscription subscription = subscriptionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Subscription not found"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy Subscription"));
 
         subscription.setIsActive(false);
         subscriptionRepository.save(subscription);

@@ -16,6 +16,6 @@ public class InvoiceResponseDTO {
     private Date createdAt;
     private Long paymentId; // ID của Payment
     private String transactionId; // Mã giao dịch từ Payment
-    private Payment.PaymentStatus paymentStatus;
-    private Payment.PaymentMethod paymentMethod;
+    private String paymentStatus;
+    private String paymentMethod;
 }

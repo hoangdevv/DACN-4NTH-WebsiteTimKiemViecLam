@@ -13,9 +13,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "job_skill")
 public class JobSkill {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
+
 
     @ManyToOne
     @JoinColumn(name = "job_id", nullable = false)

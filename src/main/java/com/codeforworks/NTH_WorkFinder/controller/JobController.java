@@ -2,6 +2,7 @@ package com.codeforworks.NTH_WorkFinder.controller;
 
 import com.codeforworks.NTH_WorkFinder.dto.job.JobRequestDTO;
 import com.codeforworks.NTH_WorkFinder.dto.job.JobResponseDTO;
+import com.codeforworks.NTH_WorkFinder.dto.job.JobSearchCriteria;
 import com.codeforworks.NTH_WorkFinder.service.IJobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class JobController {
     private IJobService jobService;
 
     // Tạo một công việc mới
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<JobResponseDTO> createJob(@RequestBody JobRequestDTO jobRequestDTO) {
         JobResponseDTO createdJob = jobService.createJob(jobRequestDTO);
         return ResponseEntity.ok(createdJob);
@@ -31,14 +32,14 @@ public class JobController {
     }
 
     // Lấy danh sách tất cả công việc
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<JobResponseDTO>> getAllJobs() {
         List<JobResponseDTO> jobs = jobService.getAllJobs();
         return ResponseEntity.ok(jobs);
     }
 
     // Cập nhật thông tin công việc theo ID
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<JobResponseDTO> updateJob(
             @PathVariable Long id,
             @RequestBody JobRequestDTO jobRequestDTO) {
@@ -47,9 +48,16 @@ public class JobController {
     }
 
     // Xóa công việc theo ID
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteJob(@PathVariable Long id) {
         jobService.deleteJob(id);
         return ResponseEntity.noContent().build();
+    }
+
+    //tìm kiếm công việc.
+    @PostMapping("/search")
+    public ResponseEntity<List<JobResponseDTO>> searchJobs(@RequestBody JobSearchCriteria criteria) {
+        List<JobResponseDTO> jobs = jobService.searchJobs(criteria);
+        return ResponseEntity.ok(jobs);
     }
 }

@@ -39,10 +39,14 @@ public class EmployerService implements IEmployerService {
 
     @Override
     public void registerEmployer(EmployerSignupRequestDTO dto) {
-        // Kiểm tra email đã tồn tại chưa
+        // Kiểm tra email đã tồn tại chưa và pw
         if (accountRepository.findByEmail(dto.getEmail()).isPresent()) {
             throw new RuntimeException("Email đã được sử dụng");
         }
+        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
+            throw new RuntimeException("Mật khẩu và xác nhận mật khẩu không khớp");
+        }
+
 
         // Tạo và thiết lập Account
         Account account = new Account();
@@ -153,7 +157,7 @@ public class EmployerService implements IEmployerService {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy Employer"));
 
         return employer.getSubscriptions().stream()
-                .map(subscription -> SubscriptionMapper.INSTANCE.toSubscriptionResponseDTO(subscription))
+                .map(SubscriptionMapper.INSTANCE::toSubscriptionResponseDTO)
                 .collect(Collectors.toList());
     }
 }

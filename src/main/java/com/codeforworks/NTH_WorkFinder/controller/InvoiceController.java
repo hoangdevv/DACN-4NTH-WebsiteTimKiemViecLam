@@ -17,7 +17,7 @@ public class InvoiceController {
     private InvoiceService invoiceService;
 
     // Tạo một hóa đơn mới
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<InvoiceResponseDTO> createInvoice(@RequestBody InvoiceRequestDTO invoiceRequestDTO) {
         InvoiceResponseDTO createdInvoice = invoiceService.createInvoice(invoiceRequestDTO);
         return ResponseEntity.ok(createdInvoice);
@@ -31,7 +31,7 @@ public class InvoiceController {
     }
 
     // Lấy danh sách tất cả các hóa đơn
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<InvoiceResponseDTO>> getAllInvoices() {
         List<InvoiceResponseDTO> invoices = invoiceService.getAllInvoices();
         return ResponseEntity.ok(invoices);
@@ -45,7 +45,7 @@ public class InvoiceController {
     }
 
     // Xóa hóa đơn theo ID
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteInvoice(@PathVariable Long id) {
         invoiceService.deleteInvoice(id);
         return ResponseEntity.noContent().build();

@@ -1,5 +1,6 @@
 package com.codeforworks.NTH_WorkFinder.service.impl;
 
+import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateProfileDTO;
 import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateRequestDTO;
 import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateResponseDTO;
 import com.codeforworks.NTH_WorkFinder.mapper.CandidateMapper;
@@ -24,10 +25,10 @@ public class CandidateService implements ICandidateService {
     private UserRepository userRepository;
 
     @Override
-    public CandidateResponseDTO getCandidateById(Long id) {
+    public CandidateProfileDTO getCandidateProfileById(Long id) {
         Candidate candidate = candidateRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy Candidate"));
-        return CandidateMapper.INSTANCE.toCandidateResponseDTO(candidate);
+        return CandidateMapper.INSTANCE.toCandidateProfileDTO(candidate);
     }
 
     @Override
@@ -39,24 +40,25 @@ public class CandidateService implements ICandidateService {
     }
 
     @Override
-    public CandidateResponseDTO createCandidate(CandidateRequestDTO candidateRequestDTO) {
-        Candidate candidate = CandidateMapper.INSTANCE.toCandidateEntity(candidateRequestDTO);
+    public CandidateProfileDTO createCandidate(CandidateRequestDTO candidateRequestDTO) {
+        if (candidateRepository.existsByUserId(candidateRequestDTO.getUserId())) {
+            throw new RuntimeException("Ứng viên đã tồn tại cho User này.");
+        }
 
-        // Thiết lập User cho Candidate
+        Candidate candidate = CandidateMapper.INSTANCE.toCandidateEntity(candidateRequestDTO);
         User user = userRepository.findById(candidateRequestDTO.getUserId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy User"));
         candidate.setUser(user);
 
         Candidate savedCandidate = candidateRepository.save(candidate);
-        return CandidateMapper.INSTANCE.toCandidateResponseDTO(savedCandidate);
+        return CandidateMapper.INSTANCE.toCandidateProfileDTO(savedCandidate);
     }
 
     @Override
-    public CandidateResponseDTO updateCandidate(Long id, CandidateRequestDTO candidateRequestDTO) {
+    public CandidateProfileDTO updateCandidate(Long id, CandidateRequestDTO candidateRequestDTO) {
         Candidate candidate = candidateRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy Candidate"));
 
-        // Cập nhật các trường thông tin
         candidate.setPhone(candidateRequestDTO.getPhone());
         candidate.setAddress(candidateRequestDTO.getAddress());
         candidate.setLocation(candidateRequestDTO.getLocation());
@@ -66,7 +68,7 @@ public class CandidateService implements ICandidateService {
         candidate.setAttachedFile(candidateRequestDTO.getAttachedFile());
 
         Candidate updatedCandidate = candidateRepository.save(candidate);
-        return CandidateMapper.INSTANCE.toCandidateResponseDTO(updatedCandidate);
+        return CandidateMapper.INSTANCE.toCandidateProfileDTO(updatedCandidate);
     }
 
     @Override

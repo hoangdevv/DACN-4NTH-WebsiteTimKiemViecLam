@@ -16,7 +16,7 @@ public class PackageController {
     @Autowired
     private IPackageService packageService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<PackageResponseDTO> createPackage(@RequestBody PackageRequestDTO packageRequestDTO) {
         PackageResponseDTO createdPackage = packageService.createPackage(packageRequestDTO);
         return ResponseEntity.ok(createdPackage);
@@ -28,19 +28,19 @@ public class PackageController {
         return ResponseEntity.ok(aPackage);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<PackageResponseDTO>> getAllPackages() {
         List<PackageResponseDTO> packages = packageService.getAllPackages();
         return ResponseEntity.ok(packages);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<PackageResponseDTO> updatePackage(@PathVariable Long id, @RequestBody PackageRequestDTO packageRequestDTO) {
         PackageResponseDTO updatedPackage = packageService.updatePackage(id, packageRequestDTO);
         return ResponseEntity.ok(updatedPackage);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePackage(@PathVariable Long id) {
         packageService.deletePackage(id);
         return ResponseEntity.noContent().build();

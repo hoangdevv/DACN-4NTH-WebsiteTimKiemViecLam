@@ -2,36 +2,49 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import logo from '../../assets/images/logo.png';
+import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import logo from '../../assets/logos/logo.png';
 
 const Header = () => {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
-      <div className="container">
-        <div className="d-flex justify-content-between align-items-center py-3">
-          {/* Logo */}
-          <div>
-            <Link to="/" className="text-decoration-none text-dark">
-              <img src={logo} alt="JobFinder" height="64" />Website Tìm Việc
-            </Link>
-          </div>
-
-          {/* Navigation */}
-          <nav className="d-none d-md-flex">
-            <Link to="/" className="text-dark mx-3 text-decoration-none">Trang chủ</Link>
-            <Link to="/jobs" className="text-dark mx-3 text-decoration-none">Việc làm</Link>
-            <Link to="/companies" className="text-dark mx-3 text-decoration-none">Công ty</Link>
-            <Link to="/blog" className="text-dark mx-3 text-decoration-none">Blog</Link>
-          </nav>
-
-          {/* Auth Buttons */}
-          <div className="d-flex align-items-center">
-            <Link to="/login" className="btn btn-link text-dark">Đăng nhập</Link>
-            <Link to="/register" className="btn btn-primary ms-3">Đăng ký</Link>
-          </div>
-        </div>
-      </div>
-    </header>
+      <Navbar bg="white" expand="lg" sticky="top" className="border-bottom">
+          <Container fluid>
+              {/* Logo */}
+              <Navbar.Brand href="/">
+                  <img
+                      src={logo} 
+                      alt="CareerLink Logo"
+                      style={{ height: '40px'}}
+                  />
+              </Navbar.Brand>
+              
+              {/* Middle Navigation Links */}
+              <Nav className="mx-auto">
+                  <Nav.Link href="/jobs"><i className="bi bi-search"></i> Ngành nghề/ Địa điểm</Nav.Link>
+                  <Nav.Link href="#company"><i className="bi bi-buildings"></i> Công ty</Nav.Link>
+                  <Nav.Link href="#guide"><i className="bi bi-book"></i> Cẩm nang việc làm</Nav.Link>
+                  <Nav.Link href="#cv-template"><i className="bi bi-file-earmark-text"></i> Mẫu CV Xin Việc</Nav.Link>
+              </Nav>
+              
+              {/* Right Navigation Links */}
+              <Nav className="d-flex align-items-center">
+                  <Nav.Link href="#chat" className="me-3">
+                      <i className="bi bi-chat-dots"></i> Trò chuyện
+                  </Nav.Link>
+                  <NavDropdown 
+                      title={<><i className="bi bi-person-circle"></i> Đăng ký</>} 
+                      id="account-dropdown"
+                      style={{ border: '1px solid #ccc', borderRadius: '10px' }}
+                      className="me-3"
+                  >
+                      <NavDropdown.Item href="/register">Đăng ký</NavDropdown.Item>
+                      <NavDropdown.Item href="/login">Đăng nhập</NavDropdown.Item>
+                  </NavDropdown>
+                  <Nav.Link href="#employer" className="text-dark">Nhà tuyển dụng</Nav.Link>
+              </Nav>
+          </Container>
+      </Navbar>
   );
 };
 

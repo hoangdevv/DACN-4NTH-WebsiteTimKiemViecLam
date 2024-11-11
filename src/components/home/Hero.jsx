@@ -16,7 +16,7 @@ const Hero = () => {
         <SearchBar />
         <div class="container mt-3">
           <div class="d-flex align-items-center mb-3">
-            <span class="me-2">Trending now:</span>
+            <span class="me-2">Xu hướng hiện nay:</span>
             <div class="d-inline-flex badge-container">
               <span class="badge badge-custom text-black">Java</span>
               <span class="badge badge-custom text-black">ReactJS</span>

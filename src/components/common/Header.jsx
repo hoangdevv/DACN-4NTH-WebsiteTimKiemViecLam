@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
@@ -22,7 +21,7 @@ const Header = () => {
               {/* Middle Navigation Links */}
               <Nav className="mx-auto">
                   <Nav.Link href="/jobs"><i className="bi bi-search"></i> Ngành nghề/ Địa điểm</Nav.Link>
-                  <Nav.Link href="#company"><i className="bi bi-buildings"></i> Công ty</Nav.Link>
+                  <Nav.Link href="/companies"><i className="bi bi-buildings"></i> Công ty</Nav.Link>
                   <Nav.Link href="#guide"><i className="bi bi-book"></i> Cẩm nang việc làm</Nav.Link>
                   <Nav.Link href="#cv-template"><i className="bi bi-file-earmark-text"></i> Mẫu CV Xin Việc</Nav.Link>
               </Nav>

@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import TechCorp from '../../assets/logos/TechCorp.png';
 import BrandSolutions from '../../assets/logos/BrandSolutions.png';
@@ -58,7 +59,7 @@ const FeaturedJobs = () => {
                       {job.type}
                     </div>
                   </div>
-                  <button type="button" class="btn btn-success mt-2">
+                  <button type="button" className ="btn btn-success mt-2">
                     Ứng tuyển ngay
                   </button>
                 </div>

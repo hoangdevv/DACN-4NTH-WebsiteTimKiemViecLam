@@ -1,4 +1,4 @@
-package com.codeforworks.NTH_WorkFinder.dto.request;
+package com.codeforworks.NTH_WorkFinder.dto.auth.login;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,5 +8,4 @@ import lombok.Setter;
 public class LoginRequestDTO {
     private String email;
     private String password;
-    private String token;
 }

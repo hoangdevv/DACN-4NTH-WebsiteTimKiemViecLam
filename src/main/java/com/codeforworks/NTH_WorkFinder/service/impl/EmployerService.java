@@ -2,13 +2,9 @@ package com.codeforworks.NTH_WorkFinder.service.impl;
 
 import com.codeforworks.NTH_WorkFinder.dto.employer.EmployerRequestDTO;
 import com.codeforworks.NTH_WorkFinder.dto.employer.EmployerResponseDTO;
-import com.codeforworks.NTH_WorkFinder.dto.employer.EmployerSignupRequestDTO;
-import com.codeforworks.NTH_WorkFinder.dto.request.LoginRequestDTO;
-import com.codeforworks.NTH_WorkFinder.dto.response.LoginResponseDTO;
 import com.codeforworks.NTH_WorkFinder.dto.subscription.SubscriptionResponseDTO;
 import com.codeforworks.NTH_WorkFinder.mapper.EmployerMapper;
 import com.codeforworks.NTH_WorkFinder.mapper.SubscriptionMapper;
-import com.codeforworks.NTH_WorkFinder.model.Account;
 import com.codeforworks.NTH_WorkFinder.model.Employer;
 import com.codeforworks.NTH_WorkFinder.model.Industry;
 import com.codeforworks.NTH_WorkFinder.repository.AccountRepository;
@@ -16,7 +12,7 @@ import com.codeforworks.NTH_WorkFinder.repository.EmployerRepository;
 import com.codeforworks.NTH_WorkFinder.repository.IndustryRepository;
 import com.codeforworks.NTH_WorkFinder.service.IEmployerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,64 +31,64 @@ public class EmployerService implements IEmployerService {
     private EmployerRepository employerRepository;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
-    @Override
-    public void registerEmployer(EmployerSignupRequestDTO dto) {
-        // Kiểm tra email đã tồn tại chưa và pw
-        if (accountRepository.findByEmail(dto.getEmail()).isPresent()) {
-            throw new RuntimeException("Email đã được sử dụng");
-        }
-        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
-            throw new RuntimeException("Mật khẩu và xác nhận mật khẩu không khớp");
-        }
+//    @Override
+//    public void registerEmployer(EmployerSignupRequestDTO dto) {
+//        // Kiểm tra email đã tồn tại chưa và pw
+//        if (accountRepository.findByEmail(dto.getEmail()).isPresent()) {
+//            throw new RuntimeException("Email đã được sử dụng");
+//        }
+//        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
+//            throw new RuntimeException("Mật khẩu và xác nhận mật khẩu không khớp");
+//        }
+//
+//
+//        // Tạo và thiết lập Account
+//        Account account = new Account();
+//        account.setEmail(dto.getEmail());
+//        account.setPassword(passwordEncoder.encode(dto.getPassword())); // Mã hóa mật khẩu
+//        account.setAccountType(Account.AccountType.EMPLOYER); // Đặt loại tài khoản là EMPLOYER
+//        account.setStatus(true);
+//
+//        Account savedAccount = accountRepository.save(account);
+//
+//        // Tạo và thiết lập Employer
+//        Employer employer = new Employer();
+//        employer.setAccount(savedAccount); // Liên kết Account với Employer
+//        employer.setCompanyName(dto.getCompanyName());
+//        employer.setCompanyPhone(dto.getCompanyPhone());
+//        employer.setCompanyAddress(dto.getCompanyAddress());
+//        employer.setLocation(dto.getLocation());
+//
+//        // Tìm Industry dựa trên industryId và gán cho Employer
+//        Industry industry = industryRepository.findById(dto.getIndustryId())
+//                .orElseThrow(() -> new RuntimeException("Không tìm thấy Industry"));
+//        employer.setIndustry(industry);
+//
+//        employerRepository.save(employer);
+//    }
 
-
-        // Tạo và thiết lập Account
-        Account account = new Account();
-        account.setEmail(dto.getEmail());
-        account.setPassword(passwordEncoder.encode(dto.getPassword())); // Mã hóa mật khẩu
-        account.setAccountType(Account.AccountType.EMPLOYER); // Đặt loại tài khoản là EMPLOYER
-        account.setStatus(true);
-
-        Account savedAccount = accountRepository.save(account);
-
-        // Tạo và thiết lập Employer
-        Employer employer = new Employer();
-        employer.setAccount(savedAccount); // Liên kết Account với Employer
-        employer.setCompanyName(dto.getCompanyName());
-        employer.setCompanyPhone(dto.getCompanyPhone());
-        employer.setCompanyAddress(dto.getCompanyAddress());
-        employer.setLocation(dto.getLocation());
-
-        // Tìm Industry dựa trên industryId và gán cho Employer
-        Industry industry = industryRepository.findById(dto.getIndustryId())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy Industry"));
-        employer.setIndustry(industry);
-
-        employerRepository.save(employer);
-    }
-
-    public LoginResponseDTO loginEmployer(LoginRequestDTO dto) {
-        Account account = accountRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new RuntimeException("Thông tin đăng nhập không hợp lệ"));
-
-        // Kiểm tra mật khẩu
-        if (!passwordEncoder.matches(dto.getPassword(), account.getPassword())) {
-            throw new RuntimeException("Thông tin đăng nhập không hợp lệ");
-        }
-
-        // Tạo phản hồi đăng nhập
-        LoginResponseDTO response = new LoginResponseDTO();
-        response.setId(account.getId());
-        response.setEmail(account.getEmail());
-        response.setRole(account.getAccountType().name());
-
-        // Nếu có token (JWT), thêm vào response
-        response.setToken("sample-jwt-token"); // Placeholder cho JWT
-
-        return response;
-    }
+//    public LoginResponseDTO loginEmployer(LoginRequestDTO dto) {
+//        Account account = accountRepository.findByEmail(dto.getEmail())
+//                .orElseThrow(() -> new RuntimeException("Thông tin đăng nhập không hợp lệ"));
+//
+//        // Kiểm tra mật khẩu
+//        if (!passwordEncoder.matches(dto.getPassword(), account.getPassword())) {
+//            throw new RuntimeException("Thông tin đăng nhập không hợp lệ");
+//        }
+//
+//        // Tạo phản hồi đăng nhập
+//        LoginResponseDTO response = new LoginResponseDTO();
+//        response.setId(account.getId());
+//        response.setEmail(account.getEmail());
+//        response.setRole(account.getAccountType().name());
+//
+//        // Nếu có token (JWT), thêm vào response
+//        response.setToken("sample-jwt-token"); // Placeholder cho JWT
+//
+//        return response;
+//    }
 
     @Override
     public EmployerResponseDTO getEmployerById(Long id) {

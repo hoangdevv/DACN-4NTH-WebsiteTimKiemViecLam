@@ -15,8 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "subscriptions")
-public class Subscription {
-
+public class Subscription extends Base{
 
     @ManyToOne
     @JoinColumn(name = "employer_id", nullable = false)
@@ -24,7 +23,7 @@ public class Subscription {
 
     @ManyToOne
     @JoinColumn(name = "package_id", nullable = false)
-    private Package aPackage;
+    private Package packageEntity;
 
     private Date startDate; // Ngày bắt đầu sử dụng gói
     private Date endDate;   // Ngày kết thúc sử dụng gói

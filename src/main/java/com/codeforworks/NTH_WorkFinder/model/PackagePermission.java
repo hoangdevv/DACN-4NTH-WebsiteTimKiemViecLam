@@ -14,11 +14,11 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "package_permission")
-public class PackagePermission {
+public class PackagePermission extends Base{
 
     @ManyToOne
     @JoinColumn(name = "package_id", nullable = false)
-    private Package aPackage;
+    private Package packageEntity;
 
     @ManyToOne
     @JoinColumn(name = "permission_id", nullable = false)

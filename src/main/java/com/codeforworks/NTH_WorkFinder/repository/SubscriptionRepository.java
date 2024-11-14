@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
-    boolean existsByEmployerAndAPackage(Employer employer, Package aPackage);
+    boolean existsByEmployerAndPackageEntity(Employer employer, Package packageEntity);
 }

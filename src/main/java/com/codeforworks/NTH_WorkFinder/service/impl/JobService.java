@@ -72,6 +72,11 @@ public class JobService implements IJobService {
 
         // Lưu Job và chuyển đổi kết quả sang DTO để trả về
         Job savedJob = jobRepository.save(job);
+
+        // Thiết lập mã code duy nhất cho Job
+        savedJob.setCode("APP-" + String.format("%05d", savedJob.getId()));
+        savedJob = jobRepository.save(savedJob);
+
         return JobMapper.INSTANCE.toJobResponseDTO(savedJob);
     }
     @Override

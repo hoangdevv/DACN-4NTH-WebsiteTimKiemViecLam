@@ -23,10 +23,10 @@ public class Package extends Base{
 
     private Double price;
 
-    @OneToMany(mappedBy = "aPackage")
+    @OneToMany(mappedBy = "packageEntity")
     private Set<PackagePermission> packagePermissions;
 
-    @OneToMany(mappedBy = "aPackage")
+    @OneToMany(mappedBy = "packageEntity")
     private Set<Subscription> subscriptions;
 
 }

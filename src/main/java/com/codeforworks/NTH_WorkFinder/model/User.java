@@ -18,6 +18,11 @@ public class User extends Base{
     @JoinColumn(name = "id_account", nullable = false)
     private Account account;
 
+    @Column(name = "full_name", length = 45)
+    private String fullName;
+
+    private String phone;
+
     @OneToOne(mappedBy = "user")
     private Candidate candidate;
 

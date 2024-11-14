@@ -40,13 +40,13 @@ public class SubscriptionService implements ISubscriptionService {
         Package aPackage = packageRepository.findById(subscriptionRequestDTO.getPackageId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy Package"));
         // Kiểm tra nếu Employer đã có đăng ký với gói này
-        if (subscriptionRepository.existsByEmployerAndAPackage(employer, aPackage)) {
+        if (subscriptionRepository.existsByEmployerAndPackageEntity(employer, aPackage)) {
             throw new RuntimeException("Employer đã có đăng ký cho gói này.");
         }
 
         // Thiết lập thông tin cho Subscription
         subscription.setEmployer(employer);
-        subscription.setAPackage(aPackage);
+        subscription.setPackageEntity(aPackage);
 
         Date startDate = new Date();
         subscription.setStartDate(startDate);

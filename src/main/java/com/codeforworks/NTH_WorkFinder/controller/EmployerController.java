@@ -2,9 +2,6 @@ package com.codeforworks.NTH_WorkFinder.controller;
 
 import com.codeforworks.NTH_WorkFinder.dto.employer.EmployerRequestDTO;
 import com.codeforworks.NTH_WorkFinder.dto.employer.EmployerResponseDTO;
-import com.codeforworks.NTH_WorkFinder.dto.employer.EmployerSignupRequestDTO;
-import com.codeforworks.NTH_WorkFinder.dto.request.LoginRequestDTO;
-import com.codeforworks.NTH_WorkFinder.dto.response.LoginResponseDTO;
 import com.codeforworks.NTH_WorkFinder.dto.subscription.SubscriptionResponseDTO;
 import com.codeforworks.NTH_WorkFinder.service.IEmployerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +16,6 @@ public class EmployerController {
 
     @Autowired
     private IEmployerService employerService;
-
-    // API đăng ký cho NTD
-    @PostMapping("/signup")
-    public ResponseEntity<String> registerEmployer(@RequestBody EmployerSignupRequestDTO dto) {
-        employerService.registerEmployer(dto);
-        return ResponseEntity.ok("Employer registered successfully!");
-    }
-
-    // API đăng nhập cho NTD
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> loginEmployer(@RequestBody LoginRequestDTO dto) {
-        LoginResponseDTO response = employerService.loginEmployer(dto);
-        return ResponseEntity.ok(response);
-    }
 
 //    Lấy thông tin NTD theo ID
     @GetMapping("/{id}")

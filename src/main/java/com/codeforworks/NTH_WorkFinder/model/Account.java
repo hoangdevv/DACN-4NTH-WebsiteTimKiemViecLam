@@ -1,5 +1,7 @@
 package com.codeforworks.NTH_WorkFinder.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -23,15 +25,12 @@ public class Account extends Base{
     @Column(nullable = false, unique = true) // Email không được để trống và phải là duy nhất
     private String email;
 
-    @Pattern(
-            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-            message = "Password must contain at least 8 characters, including uppercase, lowercase, number, and special character"
-    ) // Mật khẩu có ít nhất 8 ký tự, bao gồm chữ thường, chữ hoa, số và ký tự đặc biệt
+//    @Pattern(
+//            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+//            message = "Mật khẩu có ít nhất 8 ký tự, bao gồm chữ thường, chữ hoa, số và ký tự đặc biệt"
+//    )
     @Column(nullable = false)
     private String password;
-
-    @Column(name = "full_name", length = 45)
-    private String fullName;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "account_type")
@@ -39,7 +38,7 @@ public class Account extends Base{
 
     private Boolean status;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "account_role",
             joinColumns = @JoinColumn(name = "account_id"),
@@ -54,6 +53,7 @@ public class Account extends Base{
     private Admin admin;
 
     @OneToOne(mappedBy = "account")
+    @JsonIgnore
     private Employer employer;
 
     public enum AccountType {

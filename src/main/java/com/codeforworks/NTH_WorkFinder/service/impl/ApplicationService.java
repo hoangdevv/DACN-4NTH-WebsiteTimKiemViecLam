@@ -63,8 +63,13 @@ public class ApplicationService implements IApplicationService {
         Job job = jobRepository.findById(applicationRequestDTO.getJobId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy Job"));
         application.setJob(job);
-
+        // Lưu tạm để tạo id
         Application savedApplication = applicationRepository.save(application);
+
+        // Thiết lập mã code duy nhất cho Application
+        savedApplication.setCode("APP-" + String.format("%05d", savedApplication.getId()));
+        savedApplication = applicationRepository.save(savedApplication);
+
         return ApplicationMapper.INSTANCE.toApplicationResponseDTO(savedApplication);
     }
 

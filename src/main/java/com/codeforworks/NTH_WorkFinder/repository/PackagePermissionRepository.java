@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PackagePermissionRepository extends JpaRepository<PackagePermission, Long> {
-    List<PackagePermission> findByAPackageId(Long packageId);
+    List<PackagePermission> findByPackageEntity_Id(Long packageId);
 }

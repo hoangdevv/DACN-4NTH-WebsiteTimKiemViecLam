@@ -37,7 +37,7 @@ public class PackagePermissionService implements IPackagePermissionService {
                 .orElseThrow(() -> new RuntimeException("Permission not found"));
 
         PackagePermission packagePermission = new PackagePermission();
-        packagePermission.setAPackage(aPackage);
+        packagePermission.setPackageEntity(aPackage);
         packagePermission.setPermission(permission);
         packagePermission.setValue(packagePermissionRequestDTO.getValue());
 
@@ -53,7 +53,7 @@ public class PackagePermissionService implements IPackagePermissionService {
         if (packagePermissionRequestDTO.getPackageId() != null) {
             Package aPackage = packageRepository.findById(packagePermissionRequestDTO.getPackageId())
                     .orElseThrow(() -> new RuntimeException("Package not found"));
-            packagePermission.setAPackage(aPackage);
+            packagePermission.setPackageEntity(aPackage);
         }
 
         if (packagePermissionRequestDTO.getPermissionId() != null) {
@@ -78,7 +78,7 @@ public class PackagePermissionService implements IPackagePermissionService {
 
     @Override
     public List<PackagePermissionResponseDTO> getPermissionsByPackageId(Long packageId) {
-        List<PackagePermission> packagePermissions = packagePermissionRepository.findByAPackageId(packageId);
+        List<PackagePermission> packagePermissions = packagePermissionRepository.findByPackageEntity_Id(packageId);
         return packagePermissions.stream()
                 .map(PackagePermissionMapper.INSTANCE::toPackagePermissionResponseDTO)
                 .collect(Collectors.toList());

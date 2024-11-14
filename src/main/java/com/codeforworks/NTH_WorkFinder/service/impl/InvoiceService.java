@@ -40,6 +40,11 @@ public class InvoiceService implements IInvoiceService {
         invoice.setIsPaid(true);
 
         Invoice savedInvoice = invoiceRepository.save(invoice);
+
+        // Thiết lập mã code duy nhất cho Invoice
+        savedInvoice.setCode("APP-" + String.format("%05d", savedInvoice.getId()));
+        savedInvoice = invoiceRepository.save(savedInvoice);
+
         return InvoiceMapper.INSTANCE.toInvoiceResponseDTO(savedInvoice);
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "profession")
-public class Profession {
+public class Profession extends Base{
 
     private String name; // Tên ngành nghề
     private String description;

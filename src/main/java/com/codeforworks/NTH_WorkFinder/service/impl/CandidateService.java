@@ -51,6 +51,11 @@ public class CandidateService implements ICandidateService {
         candidate.setUser(user);
 
         Candidate savedCandidate = candidateRepository.save(candidate);
+
+        // Thiết lập mã code duy nhất cho Candidate
+        savedCandidate.setCode("APP-" + String.format("%05d", savedCandidate.getId()));
+        savedCandidate = candidateRepository.save(savedCandidate);
+
         return CandidateMapper.INSTANCE.toCandidateProfileDTO(savedCandidate);
     }
 

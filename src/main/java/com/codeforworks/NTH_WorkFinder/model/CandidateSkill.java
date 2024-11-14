@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "candidate_skill")
-public class CandidateSkill {
+public class CandidateSkill extends Base{
 
     @ManyToOne
     @JoinColumn(name = "candidate_id", nullable = false)

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -36,7 +37,13 @@ public class Account extends Base{
     @Column(name = "account_type")
     private AccountType accountType;
 
-    private Boolean status;
+    private Boolean status = false; // Chưa xác thực
+
+    private Boolean loggedIn = false; // Chưa đăng nhập lần đầu
+//
+//    private String verificationCode; // Thuộc tính để lưu mã xác thực tạm thời
+//
+//    private LocalDateTime otpGeneratedTime; // Thời điểm tạo mã OTP
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

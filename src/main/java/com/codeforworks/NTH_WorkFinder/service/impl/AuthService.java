@@ -13,8 +13,10 @@ import com.codeforworks.NTH_WorkFinder.repository.EmployerRepository;
 import com.codeforworks.NTH_WorkFinder.repository.IndustryRepository;
 import com.codeforworks.NTH_WorkFinder.repository.UserRepository;
 import com.codeforworks.NTH_WorkFinder.security.jwt.JwtTokenProvider;
-import com.codeforworks.NTH_WorkFinder.security.user.CustomUserDetailsService;
+import com.codeforworks.NTH_WorkFinder.security.service.AccountVerificationService;
+import com.codeforworks.NTH_WorkFinder.security.service.EmailService;
 import com.codeforworks.NTH_WorkFinder.service.IAuthService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +24,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -47,17 +49,22 @@ public class AuthService implements IAuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private AccountVerificationService accountVerificationService;
+
+    @Autowired
+    private EmailService emailService;
 
     @Transactional
     @Override
-    public User registerUser(UserRegisterDTO userDTO) {
+    public User registerUser(UserRegisterDTO userDTO) throws MessagingException {
+
         if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
             throw new IllegalArgumentException("Password và Confirm Password không khớp");
         }
@@ -74,8 +81,15 @@ public class AuthService implements IAuthService {
         account.setEmail(userDTO.getEmail());
         account.setPassword(passwordEncoder.encode(userDTO.getPassword())); // Mã hóa mật khẩu
         account.setAccountType(Account.AccountType.USER);
-        account.setStatus(true);
+        account.setStatus(false);
         account = accountRepository.save(account);
+
+        // Tạo mã OTP và lưu vào bộ nhớ tạm
+        String verificationCode = generateVerificationCode();
+        accountVerificationService.storeVerificationCode(userDTO.getEmail(), verificationCode);
+
+        // Gửi mã xác thực qua email
+        emailService.sendVerificationCode(userDTO.getEmail(), verificationCode);
 
         User user = new User();
         user.setFullName(userDTO.getFullName());
@@ -122,12 +136,40 @@ public class AuthService implements IAuthService {
         return employerRepository.save(employer);
     }
 
+//    xác thực mã
+    @Transactional
+    @Override
+    public void verifyAccount(String email, String code) {
+        Account account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Tài khoản không tồn tại"));
+
+        // Kiểm tra mã OTP và thời gian hết hạn
+        if (!accountVerificationService.verifyCode(email, code)) {
+            throw new RuntimeException("Xác thực thất bại");
+        }
+
+        // Xác thực tài khoản thành công
+        account.setStatus(true);
+        accountRepository.save(account);
+    }
+
+//    gửi lại mã
+    @Transactional
+    @Override
+    public void resendVerificationCode(String email) throws MessagingException {
+        accountVerificationService.resendVerificationCode(email);
+    }
 
     @Override
-    public LoginResponseDTO login(LoginRequestDTO loginRequest, Account.AccountType expectedAccountType, HttpServletResponse response) {
+    public LoginResponseDTO login(LoginRequestDTO loginRequest, Account.AccountType expectedAccountType, HttpServletResponse response)throws MessagingException {
         // Tìm tài khoản theo email
         Account account = accountRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("Email hoặc mật khẩu không hợp lệ"));
+
+        //Kiểm tra Email đã Kích hoạt trong login
+        if (!account.getStatus()) {
+            throw new RuntimeException("Tài khoản chưa được xác thực. Vui lòng xác thực tài khoản trước khi đăng nhập.");
+        }
 
         // Kiểm tra loại tài khoản
         if (!account.getAccountType().equals(expectedAccountType)) {
@@ -153,7 +195,24 @@ public class AuthService implements IAuthService {
         jwtCookie.setMaxAge(24 * 60 * 60); // Thời hạn cookie là 1 ngày
         response.addCookie(jwtCookie);
 
+        // Kiểm tra nếu đây là lần đăng nhập đầu tiên
+        if (!account.getLoggedIn()) {
+            // Gửi email thông báo đăng ký thành công
+            emailService.sendRegistrationSuccessEmail(loginRequest.getEmail(), account.getEmail());
+
+            // Cập nhật trạng thái đăng nhập để chỉ gửi email này một lần
+            account.setLoggedIn(true);
+            accountRepository.save(account);
+        }
+
         // Tạo phản hồi đăng nhập
-        return new LoginResponseDTO("Đăng nhập thành công", jwtToken);
+        return new LoginResponseDTO("Đăng nhập thành công. Vui lòng kiểm tra email để nhận mã xác thực.", jwtToken);
+    }
+
+    // Tạo mã xác thực ngẫu nhiên (6 chữ số)
+    private String generateVerificationCode() {
+        Random random = new Random();
+        int code = 100000 + random.nextInt(900000);  // Số ngẫu nhiên từ 100000 đến 999999
+        return String.valueOf(code);
     }
 }

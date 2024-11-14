@@ -1,13 +1,13 @@
-package com.codeforworks.NTH_WorkFinder.security.user;
+package com.codeforworks.NTH_WorkFinder.security.service;
 
 import com.codeforworks.NTH_WorkFinder.model.Account;
 import com.codeforworks.NTH_WorkFinder.repository.AccountRepository;
+import com.codeforworks.NTH_WorkFinder.security.user.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

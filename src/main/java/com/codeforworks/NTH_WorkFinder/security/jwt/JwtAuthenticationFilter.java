@@ -1,6 +1,6 @@
 package com.codeforworks.NTH_WorkFinder.security.jwt;
 
-import com.codeforworks.NTH_WorkFinder.security.user.CustomUserDetailsService;
+import com.codeforworks.NTH_WorkFinder.security.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;

@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Navbar, Nav, NavDropdown, Container, Form } from 'react-bootstrap';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import logo from '../../assets/logos/logo.png';
+import logo from '../../../assets/logos/logo.png';
 
 const HeaderJobs = () => {
   return (
@@ -47,7 +47,7 @@ const HeaderJobs = () => {
                         className="me-3"
                     >
                         <NavDropdown.Item href="/jobs"><i className="bi bi-search"></i> Ngành nghề/ Địa điểm</NavDropdown.Item>
-                        <NavDropdown.Item href="#company"><i className="bi bi-buildings"></i> Công ty</NavDropdown.Item>
+                        <NavDropdown.Item href="/companies"><i className="bi bi-buildings"></i> Công ty</NavDropdown.Item>
                         <NavDropdown.Item href="#guide"><i className="bi bi-book"></i> Cẩm nang việc làm</NavDropdown.Item>
                         <NavDropdown.Item href="#cv-template"><i className="bi bi-file-earmark-text"></i> Mẫu CV Xin Việc</NavDropdown.Item>
                   </NavDropdown>

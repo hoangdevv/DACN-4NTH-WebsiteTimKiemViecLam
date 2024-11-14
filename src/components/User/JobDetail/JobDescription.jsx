@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import jobs from '../data/jobs';
-import employers from '../data/employers';
-import industries from '../data/industries';
-import professions from '../data/professions';
-import '../../styles/JobDescription.css'
+import jobs from '../../data/jobs';
+import employers from '../../data/employers';
+import industries from '../../data/industries';
+import professions from '../../data/professions';
+import '../../../styles/JobDescription.css';
 import { FaMoneyBillWave, FaMapMarkerAlt, FaUserTie, FaGraduationCap } from 'react-icons/fa';
 
 const JobDescription = ({ jobId }) => {

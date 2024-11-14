@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import GoogleLogo from '../../assets/logos/Google.png';
-import FacebookLogo from '../../assets/logos/Facebook.png';
+import GoogleLogo from '../../../assets/logos/Google.png';
+import FacebookLogo from '../../../assets/logos/Facebook.png';
 
 const companies = [
   {

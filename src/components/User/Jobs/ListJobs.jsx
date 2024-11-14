@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import '../../styles/ListJob.css';
-import Jobs from '../data/jobs';
+import '../../../styles/ListJob.css';
+import Jobs from '../../data/jobs';
 import { Link } from 'react-router-dom';
 
 

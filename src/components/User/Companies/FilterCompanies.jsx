@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import locations from '../data/locations';
+import locations from '../../data/locations';
 
 const FilterCompanies = () => {
   const [showAll, setShowAll] = useState(false);

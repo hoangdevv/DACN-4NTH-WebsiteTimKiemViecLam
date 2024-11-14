@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import jobs from '../data/jobs';
-import employers from '../data/employers';
+import { useNavigate } from 'react-router-dom';
 import { FaMapMarkerAlt, FaMoneyBillAlt, FaBriefcase, FaCalendarAlt, FaHeart } from 'react-icons/fa';
+import jobs from '../../data/jobs';
+import employers from '../../data/employers';
 
 const JobDetailInfo = ({ jobId }) => {
   const job = jobs.find((job) => job.id_job === jobId);
   const employer = employers.find((emp) => emp.id_employer === job?.id_employer);
+  const navigate = useNavigate();
 
   if (!job) {
     return (
@@ -28,7 +30,13 @@ const JobDetailInfo = ({ jobId }) => {
           />
           <div className="text-start">
             <h5 className="card-title mb-1">{job.title}</h5>
-            <p className="text-muted mb-1">{employer ? employer.company_name : "Tên công ty không xác định"}</p>
+            <p
+              className="text-muted mb-1"
+              style={{ cursor: 'pointer', color: '#007bff' }}
+              onClick={() => navigate(`/companyDetail/${employer?.id_employer}`)}
+            >
+              {employer ? employer.company_name : "Tên công ty không xác định"}
+            </p>
           </div>
         </div>
         <div className="mt-3">

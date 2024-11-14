@@ -1,35 +1,37 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import Header from '../../components/common/Header';
-import Footer from '../../components/common/Footer';
-import employers from '../../components/data/employers';
-import CompanyDetailInfo from '../../components/Companies/CompanyDetailInfo';
+    import React from 'react';
+    import { useParams } from 'react-router-dom';
+    import Header from '../../components/User/common/Header';
+    import Footer from '../../components/User/common/Footer';
+    import employers from '../../components/data/employers';
+    import CompanyDetailInfo from '../../components/User/Companies/CompanyDetailInfo';
+    import ComnpanyDescription from '../../components/User/Companies/CompanyDescription';
+    import CompanyMedia from '../../components/User/Companies/ComnpanyMedia';
 
-const CompanyDetail = () => {
-    const { id } = useParams();
-    const company = employers.find((emp) => emp.id_employer === id);
+    const CompanyDetail = () => {
+        const { id } = useParams();
+        const company = employers.find((emp) => emp.id_employer === id);
 
-    if (!company) {
-        return <div>Company not found</div>;
-    }
+        if (!company) {
+            return <div>Company not found</div>;
+        }
 
-    return (
-        <div>
-            <Header />
-            <div className="container-fluid text-center mt-4 d-flex justify-content-center">
-                <div className="row w-100" style={{ maxWidth: '1200px' }}>
-                <CompanyDetailInfo />
-                    <div className="col-md-8">
-                        
-                    </div>
-                    <div className="col-md-4">
-                        
+        return (
+            <div>
+                <Header />
+                <div className="container-fluid text-center mt-4 d-flex justify-content-center">
+                    <div className="row w-100" style={{ maxWidth: '1200px' }}>
+                    <CompanyDetailInfo companyId={id}/>
+                        <div className="col-md-8">
+                            <ComnpanyDescription companyId={id} />
+                        </div>
+                        <div className="col-md-4">
+                            <CompanyMedia companyId={id} />
+                        </div>
                     </div>
                 </div>
+                <Footer />
             </div>
-            <Footer />
-        </div>
-    );
-};
+        );
+    };
 
-export default CompanyDetail;
+    export default CompanyDetail;

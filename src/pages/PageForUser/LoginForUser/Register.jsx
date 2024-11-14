@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../../styles/Register.css';
-import Header from '../../../components/common/Header';
-import Footer from '../../../components/common/Footer';
+import Header from '../../../components/User/common/Header';
+import Footer from '../../../components/User/common/Footer';
 
 const Register = () => {
   const [formData, setFormData] = useState({

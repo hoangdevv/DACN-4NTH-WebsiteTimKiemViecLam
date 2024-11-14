@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import '../../../styles/Login.css'
 import GoogleIcon from '../../../assets/logos/Google.png';
 import GithubIcon from '../../../assets/logos/GitHub.png';
-import Header from '../../../components/common/Header'
-import Footer from '../../../components/common/Footer';
+import Header from '../../../components/User/common/Header'
+import Footer from '../../../components/User/common/Footer';
 
 const Login = () => {
   const [formData, setFormData] = useState({

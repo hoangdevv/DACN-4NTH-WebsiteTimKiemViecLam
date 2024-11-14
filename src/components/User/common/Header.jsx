@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import logo from '../../assets/logos/logo.png';
+import logo from '../../../assets/logos/logo.png';
 
 const Header = () => {
   return (

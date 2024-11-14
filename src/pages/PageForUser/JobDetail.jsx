@@ -1,10 +1,10 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import HeaderJobs from '../../components/Jobs/HeaderJobs';
-import Footer from '../../components/common/Footer';
-import JobDetailInfo from '../../components/JobDetail/JobDetailInfo';
-import JobDescription from '../../components/JobDetail/JobDescription';
-import SimilarJobs from '../../components/JobDetail/SimilarJobs';
+import HeaderJobs from '../../components/User/Jobs/HeaderJobs';
+import Footer from '../../components/User/common/Footer';
+import JobDetailInfo from '../../components/User/JobDetail/JobDetailInfo';
+import JobDescription from '../../components/User/JobDetail/JobDescription';
+import SimilarJobs from '../../components/User/JobDetail/SimilarJobs';
 
 const DetailJob = () => {
     const { id } = useParams();

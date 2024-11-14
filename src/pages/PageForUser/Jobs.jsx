@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import HeaderJobs from '../../components/Jobs/HeaderJobs';
-import FilterJobs from '../../components/Jobs/FilterJobs';
-import ListJobs from '../../components/Jobs/ListJobs';
-import Footer from '../../components/common/Footer';
+import HeaderJobs from '../../components/User/Jobs/HeaderJobs';
+import FilterJobs from '../../components/User/Jobs/FilterJobs';
+import ListJobs from '../../components/User/Jobs/ListJobs';
+import Footer from '../../components/User/common/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 

@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
-import TechCorp from '../../assets/logos/TechCorp.png';
-import BrandSolutions from '../../assets/logos/BrandSolutions.png';
+import TechCorp from '../../../assets/logos/TechCorp.png';
+import BrandSolutions from '../../../assets/logos/BrandSolutions.png';
 
 const jobs = [
   {

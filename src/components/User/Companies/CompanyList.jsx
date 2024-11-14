@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import employers from '../data/employers';
+import employers from '../../data/employers';
 
 const CompanyList = ({ searchTerm }) => {
   const filteredCompanies = employers.filter((company) =>

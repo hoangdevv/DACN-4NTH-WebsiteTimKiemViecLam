@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Header from '../../components/common/Header';
-import Footer from '../../components/common/Footer';
-import FilterCompanies from '../../components/Companies/FilterCompanies';
-import CompanyList from '../../components/Companies/CompanyList';
+import Header from '../../components/User/common/Header';
+import Footer from '../../components/User/common/Footer';
+import FilterCompanies from '../../components/User/Companies/FilterCompanies';
+import CompanyList from '../../components/User/Companies/CompanyList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 

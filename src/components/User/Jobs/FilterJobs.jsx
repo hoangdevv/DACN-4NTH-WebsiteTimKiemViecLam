@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dropdown, DropdownButton, Button } from 'react-bootstrap';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import industries from '../data/industries';
+import industries from '../../data/industries';
 
 const FilterJobs = () => {
   // State for each filter dropdown

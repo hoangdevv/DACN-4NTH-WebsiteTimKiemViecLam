@@ -4,14 +4,8 @@ import com.codeforworks.NTH_WorkFinder.dto.auth.login.LoginRequestDTO;
 import com.codeforworks.NTH_WorkFinder.dto.auth.login.LoginResponseDTO;
 import com.codeforworks.NTH_WorkFinder.dto.auth.register.EmployerRegisterDTO;
 import com.codeforworks.NTH_WorkFinder.dto.auth.register.UserRegisterDTO;
-import com.codeforworks.NTH_WorkFinder.model.Account;
-import com.codeforworks.NTH_WorkFinder.model.Employer;
-import com.codeforworks.NTH_WorkFinder.model.Industry;
-import com.codeforworks.NTH_WorkFinder.model.User;
-import com.codeforworks.NTH_WorkFinder.repository.AccountRepository;
-import com.codeforworks.NTH_WorkFinder.repository.EmployerRepository;
-import com.codeforworks.NTH_WorkFinder.repository.IndustryRepository;
-import com.codeforworks.NTH_WorkFinder.repository.UserRepository;
+import com.codeforworks.NTH_WorkFinder.model.*;
+import com.codeforworks.NTH_WorkFinder.repository.*;
 import com.codeforworks.NTH_WorkFinder.security.jwt.JwtTokenProvider;
 import com.codeforworks.NTH_WorkFinder.security.service.AccountVerificationService;
 import com.codeforworks.NTH_WorkFinder.security.service.EmailService;
@@ -36,6 +30,9 @@ public class AuthService implements IAuthService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -81,6 +78,10 @@ public class AuthService implements IAuthService {
         account.setEmail(userDTO.getEmail());
         account.setPassword(passwordEncoder.encode(userDTO.getPassword())); // Mã hóa mật khẩu
         account.setAccountType(Account.AccountType.USER);
+        // Gán vai trò mặc định cho USER
+        Role userRole = roleRepository.findByRoleName("BASIC_USER")
+                .orElseThrow(() -> new RuntimeException("Role BASIC_USER không tồn tại"));
+        account.getRoles().add(userRole);
         account.setStatus(false);
         account = accountRepository.save(account);
 
@@ -116,6 +117,10 @@ public class AuthService implements IAuthService {
         account.setEmail(employerDTO.getEmail());
         account.setPassword(passwordEncoder.encode(employerDTO.getPassword())); // Mã hóa mật khẩu
         account.setAccountType(Account.AccountType.EMPLOYER);
+        // Gán vai trò mặc định cho EMPLOYER
+        Role employerRole = roleRepository.findByRoleName("HR_MANAGER")
+                .orElseThrow(() -> new RuntimeException("Role HR_MANAGER không tồn tại"));
+        account.getRoles().add(employerRole);
         account.setStatus(true);
         account = accountRepository.save(account);
 

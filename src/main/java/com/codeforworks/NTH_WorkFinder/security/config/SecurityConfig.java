@@ -45,20 +45,27 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sử dụng Stateless session
 
-                // Cấu hình phân quyền cho các yêu cầu
+                // Cấu hình phân quyền
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-
+                        .requestMatchers("/oauth2/**").permitAll()
 //                        .requestMatchers("/auth/login/user").hasRole("USER")
 //                        .requestMatchers("/auth/login/employer").hasRole("EMPLOYER")
 //                        .requestMatchers("/auth/login/admin").hasRole("ADMIN")
-
                         // Tất cả các yêu cầu khác cần xác thực
                         .anyRequest().authenticated()
-                );
+                )
 
-        // Thêm JwtAuthenticationFilter trước UsernamePasswordAuthenticationFilter
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                // Cấu hình OAuth2
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/oauth2/authorization")         // Trang login OAuth2
+                        .defaultSuccessUrl("http://localhost:3000/oauth/success", true) // URL sau khi thành công
+                        .failureUrl("http://localhost:3000/oauth/failure")                  // URL sau khi thất bại
+                )
+
+
+                // Thêm JwtAuthenticationFilter trước UsernamePasswordAuthenticationFilter
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

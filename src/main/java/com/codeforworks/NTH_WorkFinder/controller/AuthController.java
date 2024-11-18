@@ -5,23 +5,29 @@ import com.codeforworks.NTH_WorkFinder.dto.auth.login.LoginResponseDTO;
 import com.codeforworks.NTH_WorkFinder.dto.auth.register.EmployerRegisterDTO;
 import com.codeforworks.NTH_WorkFinder.dto.auth.register.UserRegisterDTO;
 import com.codeforworks.NTH_WorkFinder.model.Account;
-import com.codeforworks.NTH_WorkFinder.model.Employer;
-import com.codeforworks.NTH_WorkFinder.model.User;
-import com.codeforworks.NTH_WorkFinder.repository.EmployerRepository;
-import com.codeforworks.NTH_WorkFinder.repository.UserRepository;
+import com.codeforworks.NTH_WorkFinder.repository.AccountRepository;
 import com.codeforworks.NTH_WorkFinder.service.IAuthService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
     @Autowired
     private IAuthService authService;
+
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @PostMapping("/register/user")
     public ResponseEntity<String> registerUser(@RequestBody UserRegisterDTO userDTO) throws MessagingException {
@@ -49,30 +55,6 @@ public class AuthController {
         return ResponseEntity.ok("Mã xác thực mới đã được gửi.");
     }
 
-    /**
-     * Endpoint đăng nhập cho người dùng
-     *
-     * @param loginRequest Đối tượng chứa email và password
-     * @param response HttpServletResponse để lưu JWT vào cookie
-     * @return ResponseEntity chứa LoginResponseDTO nếu đăng nhập thành công
-     */
-//    @PostMapping("/login/user")
-//    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginRequestDTO loginRequest, HttpServletResponse response) throws MessagingException {
-//        LoginResponseDTO loginResponse = authService.login(loginRequest, Account.AccountType.USER, response);
-//        return ResponseEntity.ok(loginResponse);
-//    }
-//
-//    @PostMapping("/login/employer")
-//    public ResponseEntity<LoginResponseDTO> loginEmployer(@RequestBody LoginRequestDTO loginRequest, HttpServletResponse response) throws MessagingException {
-//        LoginResponseDTO loginResponse = authService.login(loginRequest, Account.AccountType.EMPLOYER, response);
-//        return ResponseEntity.ok(loginResponse);
-//    }
-//
-//    @PostMapping("/login/admin")
-//    public ResponseEntity<LoginResponseDTO> loginAdmin(@RequestBody LoginRequestDTO loginRequest, HttpServletResponse response) throws MessagingException {
-//        LoginResponseDTO loginResponse = authService.login(loginRequest, Account.AccountType.ADMIN, response);
-//        return ResponseEntity.ok(loginResponse);
-//    }
     // Đăng nhập
     @PostMapping("/login/{accountType}")
     public ResponseEntity<LoginResponseDTO> login(
@@ -91,5 +73,23 @@ public class AuthController {
         // Thực hiện đăng nhập
         LoginResponseDTO responseDTO = authService.login(loginRequest, expectedAccountType, response);
         return ResponseEntity.ok(responseDTO);
+    }
+
+    //lấy thông tin người dùng đang đăng nhập oauth2
+    @GetMapping("/oauth2/me")
+    public ResponseEntity<?> getCurrentOAuthUser(@AuthenticationPrincipal OAuth2User oAuth2User) {
+        if (oAuth2User == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Không có người dùng nào đang đăng nhập.");
+        }
+
+        String email = oAuth2User.getAttribute("email");
+        Optional<Account> account = accountRepository.findByEmail(email);
+
+        if (account.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tài khoản không tồn tại.");
+        }
+
+        Account userAccount = account.get();
+        return ResponseEntity.ok(userAccount);
     }
 }

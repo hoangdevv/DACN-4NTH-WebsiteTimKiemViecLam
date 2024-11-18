@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-const AvatarUpload = ({ profile, onSave }) => {
+const AvatarUpload = ({ profile, onSave, setShowModal }) => {
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [error, setError] = useState('');
 
@@ -20,7 +20,8 @@ const AvatarUpload = ({ profile, onSave }) => {
 
   const handleSave = () => {
     if (selectedAvatar) {
-      onSave(selectedAvatar); // Lưu ảnh đại diện mới
+      onSave(selectedAvatar);  // Gọi onSave khi lưu ảnh
+      setShowModal(false);  // Đóng modal sau khi lưu ảnh
     } else {
       setError('Chưa chọn ảnh đại diện');
     }
@@ -41,15 +42,16 @@ const AvatarUpload = ({ profile, onSave }) => {
         <div className="mt-3">
           {selectedAvatar && <img src={selectedAvatar} alt="Avatar Preview" style={{ height: '100px', width: '100px', objectFit: 'cover' }} />}
         </div>
-        <Button variant="primary" onClick={handleSave} className="mt-2">Lưu ảnh đại diện</Button>
+        <Button variant="primary" onClick={handleSave} className="mt-3">Lưu Avatar</Button>
       </Form>
     </div>
   );
 };
 
 AvatarUpload.propTypes = {
-  profile: PropTypes.object.isRequired,  // Xác thực kiểu dữ liệu profile
+  profile: PropTypes.object.isRequired,
   onSave: PropTypes.func.isRequired,
+  setShowModal: PropTypes.func.isRequired,  // Nhận hàm setShowModal từ profile management
 };
 
 export default AvatarUpload;

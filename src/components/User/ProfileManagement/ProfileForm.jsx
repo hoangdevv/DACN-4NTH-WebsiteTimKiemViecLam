@@ -2,11 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-const ProfileForm = ({ profile, onSave }) => {
-  const [formData, setFormData] = useState({});
+const ProfileForm = ({ profile, onSave, setShowModal }) => {
+  const [formData, setFormData] = useState({
+    full_name: profile?.full_name || '',
+    address: profile?.address || '',
+    birthday: profile?.birthday || '',
+    phone: profile?.phone || '',
+    location: profile?.location || '',
+    sex: profile?.sex || '1',
+  });
 
   useEffect(() => {
-    setFormData(profile); // Thiết lập dữ liệu người dùng ban đầu
+    setFormData({
+      full_name: profile?.full_name || '',
+      address: profile?.address || '',
+      birthday: profile?.birthday || '',
+      phone: profile?.phone || '',
+      location: profile?.location || '',
+      sex: profile?.sex || '1',
+    });
   }, [profile]);
 
   const handleChange = (e) => {
@@ -17,13 +31,13 @@ const ProfileForm = ({ profile, onSave }) => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSave(formData); // Lưu dữ liệu chỉnh sửa
+  const handleSave = () => {
+    onSave(formData);  // Gọi onSave khi lưu thông tin
+    setShowModal(false);  // Đóng modal sau khi lưu thông tin
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form>
       <Form.Group className="mb-3">
         <Form.Label>Họ và tên</Form.Label>
         <Form.Control
@@ -87,9 +101,7 @@ const ProfileForm = ({ profile, onSave }) => {
         </Form.Control>
       </Form.Group>
 
-      <Button variant="primary" type="submit">
-        Lưu thông tin
-      </Button>
+      <Button variant="primary" onClick={handleSave}>Lưu thông tin</Button>
     </Form>
   );
 };
@@ -97,6 +109,7 @@ const ProfileForm = ({ profile, onSave }) => {
 ProfileForm.propTypes = {
   profile: PropTypes.object.isRequired,
   onSave: PropTypes.func.isRequired,
+  setShowModal: PropTypes.func.isRequired,  // Nhận hàm setShowModal từ profile management
 };
 
 export default ProfileForm;

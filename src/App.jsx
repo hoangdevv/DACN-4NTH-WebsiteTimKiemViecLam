@@ -1,32 +1,25 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/PageForUser/Home';
-import NotFound from './pages/NotFound';
-import Login from './pages/PageForUser/LoginForUser/Login';
-import Register from './pages/PageForUser/LoginForUser/Register';
-import Jobs from './pages/PageForUser/Jobs';
-import JobDetail from './pages/PageForUser/JobDetail';
-import Companies from './pages/PageForUser/Companies';
-import CompanyDetail from './pages/PageForUser/CompanyDetail'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from './routes/AppRoutes';
 
 function App() {
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user)); // Cập nhật vào localStorage khi có sự thay đổi
+    } else {
+      localStorage.removeItem('user'); // Xóa thông tin người dùng khỏi localStorage khi đăng xuất
+    }
+  }, [user]);
+
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-50">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<NotFound />} />
-          <Route path="/jobs" element={<Jobs />} />
-          <Route path="/companies" element={<Companies />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/jobDetail/:id" element={<JobDetail />} />
-          <Route path="/companyDetail/:id" element={<CompanyDetail />} />
-        </Routes>
-      </div>
-    </Router>
+    <BrowserRouter>
+      <AppRoutes user={user} setUser={setUser} />
+    </BrowserRouter>
   );
 }
 

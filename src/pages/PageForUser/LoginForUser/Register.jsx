@@ -29,7 +29,7 @@ const Register = () => {
 
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <div className="register-container">
         <form className="register-form" onSubmit={handleSubmit}>
           <h2>Đăng ký tài khoản</h2>

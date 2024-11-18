@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Header from '../../components/User/common/Header';
 import Footer from '../../components/User/common/Footer';
 import FilterCompanies from '../../components/User/Companies/FilterCompanies';
 import CompanyList from '../../components/User/Companies/CompanyList';
@@ -15,7 +14,6 @@ const Companies = () => {
 
   return (
     <div>
-      <Header />
       <div className="container mt-4">
         <div className="row mb-4 align-items-center">
           <div className="col-lg-9">

@@ -1,6 +1,5 @@
     import React from 'react';
     import { useParams } from 'react-router-dom';
-    import Header from '../../components/User/common/Header';
     import Footer from '../../components/User/common/Footer';
     import employers from '../../components/data/employers';
     import CompanyDetailInfo from '../../components/User/Companies/CompanyDetailInfo';
@@ -17,7 +16,6 @@
 
         return (
             <div>
-                <Header />
                 <div className="container-fluid text-center mt-4 d-flex justify-content-center">
                     <div className="row w-100" style={{ maxWidth: '1200px' }}>
                     <CompanyDetailInfo companyId={id}/>

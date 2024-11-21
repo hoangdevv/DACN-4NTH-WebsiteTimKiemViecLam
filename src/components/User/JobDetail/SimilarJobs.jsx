@@ -17,7 +17,7 @@ const SimilarJobs = ({ currentJobId }) => {
     .slice(0, 10);
 
   return (
-    <div className="card shadow-sm p-3 mb-4">
+    <div className="card shadow-sm p-3 mb-4" style={{ borderRadius: '10px' }}>
       <h5 className="mb-3">Việc tương tự</h5>
       {similarJobs.map((job) => {
         // Find the employer for the job
@@ -34,7 +34,7 @@ const SimilarJobs = ({ currentJobId }) => {
                 className="me-3"
                 style={{ width: '40px', height: '40px', borderRadius: '5px' }}
               />
-              <div className="text-start">
+              <div className="text-start" style={{ flex: 1 }}>
                 <h6 className="mb-1" style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
                   {job.title}
                 </h6>
@@ -44,7 +44,13 @@ const SimilarJobs = ({ currentJobId }) => {
                 <div className="d-flex align-items-center mb-1" style={{ fontSize: '0.8rem', color: '#666' }}>
                   <FaMapMarkerAlt className="me-1" /> {job.location}
                 </div>
-                <div className="d-flex align-items-center" style={{ fontSize: '0.8rem', color: '#007bff' }}>
+                <div
+                  className="d-flex align-items-center"
+                  style={{
+                    fontSize: '0.8rem',
+                    color: 'rgb(255, 99, 71)', 
+                  }}
+                >
                   <FaDollarSign className="me-1" /> {job.salary || 'Thương lượng'}
                 </div>
               </div>

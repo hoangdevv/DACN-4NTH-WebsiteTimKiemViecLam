@@ -2,9 +2,9 @@
     import { useParams } from 'react-router-dom';
     import Footer from '../../components/User/common/Footer';
     import employers from '../../components/data/employers';
-    import CompanyDetailInfo from '../../components/User/Companies/CompanyDetailInfo';
-    import ComnpanyDescription from '../../components/User/Companies/CompanyDescription';
-    import CompanyMedia from '../../components/User/Companies/ComnpanyMedia';
+    import CompanyDetailInfo from '../../components/User/CompanyDetail/CompanyDetailInfo';
+    import ComnpanyDescription from '../../components/User/CompanyDetail/CompanyDescription';
+    import CompanyMedia from '../../components/User/CompanyDetail/ComnpanyMedia';
 
     const CompanyDetail = () => {
         const { id } = useParams();

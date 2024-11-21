@@ -1,130 +1,200 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import { Navbar, Nav, NavDropdown, Container, Form } from 'react-bootstrap';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import { Layout, Menu, Dropdown, Input, Button, Avatar } from 'antd';
+import {
+  SearchOutlined,
+  UserOutlined,
+  MenuOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+  MessageOutlined,
+  BankOutlined,
+  FileTextOutlined,
+} from '@ant-design/icons';
 import logo from '../../../assets/logos/logo.png';
+
+const { Header } = Layout;
 
 const HeaderJobs = ({ user, setUser }) => {
   const handleLogout = () => {
-    setUser(null); // Xóa thông tin user trong trạng thái ứng dụng
-    localStorage.removeItem('user'); // Xóa thông tin user khỏi localStorage
-    window.location.href = '/'; // Điều hướng về trang chủ sau khi đăng xuất
+    setUser(null); // Xóa trạng thái user
+    localStorage.removeItem('user'); // Xóa user từ localStorage
+    window.location.href = '/'; // Điều hướng về trang chủ
   };
 
-  return (
-    <Navbar bg="white" expand="lg" sticky="top" className="border-bottom">
-      <Container fluid>
-        {/* Logo */}
-        <Navbar.Brand href="/">
-          <img
-            src={logo}
-            alt="CareerLink Logo"
-            style={{ height: '40px' }}
-          />
-        </Navbar.Brand>
+  const userMenu = (
+    <Menu>
+      <Menu.Item key="profile" icon={<SettingOutlined />}>
+        <a href="/profile-management" style={{ textDecoration: 'none', color: '#000' }}>
+          Quản lý hồ sơ
+        </a>
+      </Menu.Item>
+      <Menu.Item key="account" icon={<SettingOutlined />}>
+        <a href="/account-management" style={{ textDecoration: 'none', color: '#000' }}>
+          Quản lý tài khoản
+        </a>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
+        <span style={{ textDecoration: 'none', color: '#000' }}>Đăng xuất</span>
+      </Menu.Item>
+    </Menu>
+  );
 
-        {/* Search */}
-        <Form className="d-flex w-50 me-3">
-          <Form.Control
-            type="search"
+  const guestMenu = (
+    <Menu>
+      <Menu.Item key="register">
+        <a href="/register" style={{ textDecoration: 'none', color: '#000' }}>
+          Đăng ký
+        </a>
+      </Menu.Item>
+      <Menu.Item key="login">
+        <a href="/login" style={{ textDecoration: 'none', color: '#000' }}>
+          Đăng nhập
+        </a>
+      </Menu.Item>
+    </Menu>
+  );
+
+  const navMenu = (
+    <Menu>
+      <Menu.Item key="jobs" icon={<SearchOutlined />}>
+        <a href="/jobs" style={{ textDecoration: 'none', color: '#000' }}>
+          Ngành nghề/ Địa điểm
+        </a>
+      </Menu.Item>
+      <Menu.Item key="companies" icon={<BankOutlined />}>
+        <a href="/companies" style={{ textDecoration: 'none', color: '#000' }}>
+          Công ty
+        </a>
+      </Menu.Item>
+      <Menu.Item key="guide" icon={<FileTextOutlined />}>
+        <a href="#guide" style={{ textDecoration: 'none', color: '#000' }}>
+          Cẩm nang việc làm
+        </a>
+      </Menu.Item>
+      <Menu.Item key="cv-template" icon={<FileTextOutlined />}>
+        <a href="#cv-template" style={{ textDecoration: 'none', color: '#000' }}>
+          Mẫu CV Xin Việc
+        </a>
+      </Menu.Item>
+    </Menu>
+  );
+
+  return (
+    <Header
+      style={{
+        background: '#fff',
+        borderBottom: '1px solid #ddd',
+        padding: '0 20px',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000,
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        {/* Logo */}
+        <a href="/" style={{ display: 'inline-block' }}>
+          <img src={logo} alt="Logo" style={{ height: '40px' }} />
+        </a>
+
+        {/* Search Bar */}
+        <div style={{ display: 'flex', flex: 1, margin: '0 20px', maxWidth: '600px' }}>
+          <Input
             placeholder="Nhập tên vị trí, công ty, từ khóa"
-            className="me-2"
-            aria-label="Search"
-            style={{ height: '40px' }}
+            prefix={<SearchOutlined />}
+            style={{ marginRight: '8px', height: '40px', borderRadius: '8px' }}
           />
-          <Form.Control
-            type="search"
+          <Input
             placeholder="Nhập tỉnh, thành phố"
-            className="me-2"
-            aria-label="Location"
-            style={{ height: '40px' }}
+            prefix={<SearchOutlined />}
+            style={{ marginRight: '8px', height: '40px', borderRadius: '8px' }}
           />
-          <button
-            className="btn btn-primary"
-            type="submit"
-            style={{ height: '40px', minWidth: '120px' }}
+          <Button
+            type="primary"
+            style={{
+              background: 'linear-gradient(to right, #020024, #cc0a9d)',
+              border: 'none',
+              height: '40px',
+              borderRadius: '8px',
+            }}
           >
             Tìm kiếm ngay
-          </button>
-        </Form>
+          </Button>
+        </div>
 
-        {/* Right Navigation Links */}
-        <Nav className="d-flex align-items-center">
-          <NavDropdown
-            title={
-              <>
-                <i className="bi bi-list"></i>
-              </>
-            }
-            id="menu-dropdown"
-            style={{ border: '1px solid #ccc', borderRadius: '10px' }}
-            className="me-3"
+        {/* Right Navigation */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          {/* Dropdown Menu */}
+          <Dropdown overlay={navMenu} trigger={['click']} placement="bottomRight" arrow>
+            <Button
+              type="text"
+              icon={<MenuOutlined />}
+              style={{
+                fontSize: '18px',
+                color: '#000',
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                padding: '5px 10px',
+              }}
+            />
+          </Dropdown>
+
+          <Button
+            type="link"
+            href="#chat"
+            icon={<MessageOutlined />}
+            style={{
+              textDecoration: 'none',
+              color: '#000',
+            }}
           >
-            <NavDropdown.Item href="/jobs">
-              <i className="bi bi-search"></i> Ngành nghề/ Địa điểm
-            </NavDropdown.Item>
-            <NavDropdown.Item href="/companies">
-              <i className="bi bi-buildings"></i> Công ty
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#guide">
-              <i className="bi bi-book"></i> Cẩm nang việc làm
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#cv-template">
-              <i className="bi bi-file-earmark-text"></i> Mẫu CV Xin Việc
-            </NavDropdown.Item>
-          </NavDropdown>
-          <Nav.Link href="#chat" className="me-3">
-            <i className="bi bi-chat-dots"></i> Trò chuyện
-          </Nav.Link>
+            Trò chuyện
+          </Button>
 
-          {/* Kiểm tra trạng thái user */}
+          {/* User Info */}
           {user ? (
-            <NavDropdown
-              title={
-                <>
-                  <i className="bi bi-person-circle"></i> {user.full_name}
-                </>
-              }
-              id="user-dropdown"
-              style={{ border: '1px solid #ccc', borderRadius: '10px' }}
-              className="me-3"
-            >
-              <NavDropdown.Item href="/profile-management">
-                Quản lý hồ sơ
-              </NavDropdown.Item>
-              <NavDropdown.Item href="/account-management">
-                Quản lý tài khoản
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={handleLogout}>
-                Đăng xuất
-              </NavDropdown.Item>
-            </NavDropdown>
+            <Dropdown overlay={userMenu} placement="bottomRight" arrow>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                <Avatar style={{ backgroundColor: '#87d068' }}>
+                  {user.full_name?.charAt(0) || <UserOutlined />}
+                </Avatar>
+                <span style={{ color: '#000', marginRight: '10px' }}>{user.full_name}</span>
+              </div>
+            </Dropdown>
           ) : (
-            <NavDropdown
-              title={
-                <>
-                  <i className="bi bi-person-circle"></i> Đăng ký
-                </>
-              }
-              id="account-dropdown"
-              style={{ border: '1px solid #ccc', borderRadius: '10px' }}
-              className="me-3"
-            >
-              <NavDropdown.Item href="/register">Đăng ký</NavDropdown.Item>
-              <NavDropdown.Item href="/login">Đăng nhập</NavDropdown.Item>
-            </NavDropdown>
+            <Dropdown overlay={guestMenu} placement="bottomRight" arrow>
+              <Button
+                type="link"
+                icon={<UserOutlined />}
+                style={{
+                  textDecoration: 'none',
+                  color: '#000',
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                }}
+              >
+                Đăng ký / Đăng nhập
+              </Button>
+            </Dropdown>
           )}
 
-          <Nav.Link href="/homeEmployer" className="text-dark">
+          <Button
+            type="link"
+            href="/homeEmployer"
+            style={{
+              textDecoration: 'none',
+              color: '#000',
+              border: '1px solid #ddd',
+              borderRadius: '8px',
+              padding: '5px 10px',
+            }}
+          >
             Nhà tuyển dụng
-          </Nav.Link>
-        </Nav>
-      </Container>
-    </Navbar>
+          </Button>
+        </div>
+      </div>
+    </Header>
   );
 };
 

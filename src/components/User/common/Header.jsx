@@ -1,102 +1,163 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import { Layout, Menu, Dropdown, Avatar, Button } from 'antd';
+import {
+  UserOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+  SearchOutlined,
+  BankOutlined,
+  FileTextOutlined,
+  MessageOutlined,
+} from '@ant-design/icons';
 import logo from '../../../assets/logos/logo.png';
 
-const Header = ({ user, setUser }) => {
+const { Header } = Layout;
+
+const HeaderComponent = ({ user, setUser }) => {
   const handleLogout = () => {
-    setUser(null); // Xóa thông tin user trong trạng thái ứng dụng
-    localStorage.removeItem('user'); // Xóa thông tin user khỏi localStorage
+    setUser(null);
+    localStorage.removeItem('user');
     window.location.href = '/'; // Điều hướng về trang chủ sau khi đăng xuất
   };
 
+  const userMenu = (
+    <Menu>
+      <Menu.Item key="profile" icon={<SettingOutlined />}>
+        <a href="/profileManagement" style={{ textDecoration: 'none', color: '#000' }}>
+          Quản lý hồ sơ
+        </a>
+      </Menu.Item>
+      <Menu.Item key="account" icon={<SettingOutlined />}>
+        <a href="/account-management" style={{ textDecoration: 'none', color: '#000' }}>
+          Quản lý tài khoản
+        </a>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
+        <span style={{ textDecoration: 'none', color: '#000' }}>Đăng xuất</span>
+      </Menu.Item>
+    </Menu>
+  );
+
+  const guestMenu = (
+    <Menu>
+      <Menu.Item key="register">
+        <a href="/register" style={{ textDecoration: 'none', color: '#000' }}>
+          Đăng ký
+        </a>
+      </Menu.Item>
+      <Menu.Item key="login">
+        <a href="/login" style={{ textDecoration: 'none', color: '#000' }}>
+          Đăng nhập
+        </a>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
-    <Navbar bg="white" expand="lg" sticky="top" className="border-bottom">
-      <Container fluid>
+    <Header style={{ background: '#fff', borderBottom: '1px solid #ddd', padding: '0 20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         {/* Logo */}
-        <Navbar.Brand href="/">
-          <img
-            src={logo}
-            alt="CareerLink Logo"
-            style={{ height: '40px' }}
-          />
-        </Navbar.Brand>
+        <div>
+          <a href="/" style={{ textDecoration: 'none' }}>
+            <img src={logo} alt="Logo" style={{ height: '40px' }} />
+          </a>
+        </div>
 
         {/* Middle Navigation Links */}
-        <Nav className="mx-auto">
-          <Nav.Link href="/jobs">
-            <i className="bi bi-search"></i> Ngành nghề/ Địa điểm
-          </Nav.Link>
-          <Nav.Link href="/companies">
-            <i className="bi bi-buildings"></i> Công ty
-          </Nav.Link>
-          <Nav.Link href="#guide">
-            <i className="bi bi-book"></i> Cẩm nang việc làm
-          </Nav.Link>
-          <Nav.Link href="#cv-template">
-            <i className="bi bi-file-earmark-text"></i> Mẫu CV Xin Việc
-          </Nav.Link>
-        </Nav>
+        <Menu
+          mode="horizontal"
+          style={{
+            borderBottom: 'none',
+            flex: 1,
+            justifyContent: 'center',
+            display: 'flex',
+            textAlign: 'center',
+          }}
+        >
+          <Menu.Item key="jobs" icon={<SearchOutlined />}>
+            <a href="/jobs" style={{ textDecoration: 'none', color: '#000' }}>
+              Ngành nghề/ Địa điểm
+            </a>
+          </Menu.Item>
+          <Menu.Item key="companies" icon={<BankOutlined />}>
+            <a href="/companies" style={{ textDecoration: 'none', color: '#000' }}>
+              Công ty
+            </a>
+          </Menu.Item>
+          <Menu.Item key="guide" icon={<FileTextOutlined />}>
+            <a href="#guide" style={{ textDecoration: 'none', color: '#000' }}>
+              Cẩm nang việc làm
+            </a>
+          </Menu.Item>
+          <Menu.Item key="cv-template" icon={<FileTextOutlined />}>
+            <a href="#cv-template" style={{ textDecoration: 'none', color: '#000' }}>
+              Mẫu CV Xin Việc
+            </a>
+          </Menu.Item>
+        </Menu>
 
         {/* Right Navigation Links */}
-        <Nav className="d-flex align-items-center">
-          <Nav.Link href="#chat" className="me-3">
-            <i className="bi bi-chat-dots"></i> Trò chuyện
-          </Nav.Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <Button
+            type="link"
+            href="#chat"
+            icon={<MessageOutlined />}
+            style={{ textDecoration: 'none', color: '#000' }}
+          >
+            Trò chuyện
+          </Button>
           {user ? (
-            <NavDropdown
-              title={
-                <>
-                  <i className="bi bi-person-circle"></i> {user.full_name}
-                </>
-              }
-              id="user-dropdown"
-              style={{ border: '1px solid #ccc', borderRadius: '10px' }}
-              className="me-3"
-            >
-              <NavDropdown.Item href="/profileManagement">
-                Quản lý hồ sơ
-              </NavDropdown.Item>
-              <NavDropdown.Item href="/account-management">
-                Quản lý tài khoản
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={handleLogout}>
-                Đăng xuất
-              </NavDropdown.Item>
-            </NavDropdown>
+            <Dropdown overlay={userMenu} placement="bottomRight" arrow>
+              <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
+                {/* Hiển thị tên user bên cạnh avatar */}
+                <span style={{ marginLeft: '10px', marginRight: '10px', color: '#000' }}>
+                  {user.full_name}
+                </span>
+              </div>
+            </Dropdown>
           ) : (
-            <NavDropdown
-              title={
-                <>
-                  <i className="bi bi-person-circle"></i> Đăng ký
-                </>
-              }
-              id="account-dropdown"
-              style={{ border: '1px solid #ccc', borderRadius: '10px' }}
-              className="me-3"
-            >
-              <NavDropdown.Item href="/register">Đăng ký</NavDropdown.Item>
-              <NavDropdown.Item href="/login">Đăng nhập</NavDropdown.Item>
-            </NavDropdown>
+            <Dropdown overlay={guestMenu} placement="bottomRight" arrow>
+              <Button
+                type="link"
+                icon={<UserOutlined />}
+                style={{
+                  textDecoration: 'none',
+                  color: '#000',
+                  border: '1px solid #ddd',
+                  borderRadius: '5px',
+                }}
+              >
+                Đăng ký / Đăng nhập
+              </Button>
+            </Dropdown>
           )}
-          <Nav.Link href="/homeEmployer" className="text-dark">
+          <Button
+            type="link"
+            href="/homeEmployer"
+            style={{
+              textDecoration: 'none',
+              color: '#000',
+              border: '1px solid #ddd',
+              borderRadius: '5px',
+              padding: '0 10px',
+            }}
+          >
             Nhà tuyển dụng
-          </Nav.Link>
-        </Nav>
-      </Container>
-    </Navbar>
+          </Button>
+        </div>
+      </div>
+    </Header>
   );
 };
 
-Header.propTypes = {
+HeaderComponent.propTypes = {
   user: PropTypes.shape({
     full_name: PropTypes.string,
   }),
   setUser: PropTypes.func.isRequired,
 };
 
-export default Header;
+export default HeaderComponent;

@@ -1,89 +1,105 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import '../../../styles/Login.css';
+import { Form, Input, Button, Divider, Typography, Space, message } from 'antd';
+import { GoogleOutlined, GithubOutlined } from '@ant-design/icons';
 import { accounts } from '../../../components/data/accounts';
+import '../../../styles/Login.css'; 
+
+const { Link, Text } = Typography;
 
 const Login = ({ setUser }) => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
+  const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Tìm người dùng trong mảng accounts
+  const handleSubmit = (values) => {
     const user = accounts.find(
       (u) =>
-        u.email === formData.email &&
-        u.password === formData.password &&
+        u.email === values.email &&
+        u.password === values.password &&
         u.account_type === 'user'
     );
 
     if (user) {
-      // Lưu id_account vào localStorage
       const userData = {
-        id_account: user.id_account, // Chỉ lưu id_account
+        id_account: user.id_account,
         full_name: user.full_name,
         email: user.email,
         account_type: user.account_type,
       };
 
-      // Lưu vào localStorage
       localStorage.setItem('user', JSON.stringify(userData));
 
-      setUser(user); // Cập nhật trạng thái người dùng
-      navigate('/'); // Chuyển đến trang chủ
+      setUser(user);
+      navigate('/');
     } else {
-      setError('Email hoặc mật khẩu không chính xác hoặc không phải người dùng.');
+      message.error('Email hoặc mật khẩu không chính xác hoặc không phải người dùng.');
     }
   };
 
   return (
     <div className="login-container">
-      <div className="login-box">
-        <h2>Đăng nhập</h2>
-        {error && <p className="error text-danger">{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Mật khẩu:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <button type="submit" className="login-button">
+      <div style={{ maxWidth: '400px', width: '100%' }}>
+        <h2 className="login-title">Đăng nhập</h2>
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          className="login-form"
+        >
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              { required: true, message: 'Vui lòng nhập email!' },
+              { type: 'email', message: 'Email không hợp lệ!' },
+            ]}
+          >
+            <Input placeholder="Nhập email của bạn" />
+          </Form.Item>
+
+          <Form.Item
+            label="Mật khẩu"
+            name="password"
+            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+          >
+            <Input.Password placeholder="Nhập mật khẩu của bạn" />
+          </Form.Item>
+
+          <Button type="primary" htmlType="submit" block style={{ marginBottom: '1rem' }}>
             Đăng nhập
-          </button>
-        </form>
-        <div className="login-footer">
-          <a href="/forgot-password" className="forgot-password">
-            Quên mật khẩu?
-          </a>
-          <p className="register-link">
-            Chưa có tài khoản? <a href="/register">Đăng ký ngay</a>
-          </p>
-        </div>
+          </Button>
+
+          <Divider>Hoặc</Divider>
+
+          <Button
+            icon={<GoogleOutlined />}
+            block
+            style={{ marginBottom: '0.5rem' }}
+            onClick={() => message.info('Đăng nhập với Google hiện chưa khả dụng.')}
+          >
+            Đăng nhập với Google
+          </Button>
+          <Button
+            icon={<GithubOutlined />}
+            block
+            onClick={() => message.info('Đăng nhập với GitHub hiện chưa khả dụng.')}
+          >
+            Đăng nhập với GitHub
+          </Button>
+
+          <Divider />
+
+          <div className="login-footer">
+            <Space direction="vertical" size="small">
+              <Link href="/forgot-password">Quên mật khẩu?</Link>
+              <Text>
+                Chưa có tài khoản?{' '}
+                <Link href="/register">Đăng ký ngay</Link>
+              </Text>
+            </Space>
+          </div>
+        </Form>
       </div>
     </div>
   );

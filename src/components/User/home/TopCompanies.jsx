@@ -1,52 +1,122 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
-import GoogleLogo from '../../../assets/logos/Google.png';
-import FacebookLogo from '../../../assets/logos/Facebook.png';
+import { Card, Typography, Button, Tooltip } from 'antd';
+import { EnvironmentOutlined } from '@ant-design/icons';
+import employers from '../../data/employers'; 
 
-const companies = [
-  {
-    name: 'Google',
-    industry: 'Công nghệ',
-    location: 'Hà Nội', 
-    openPositions: 15,
-    logo: GoogleLogo,
-  },
-  {
-    name: 'Facebook',
-    industry: 'Công nghệ',
-    location: 'TP. HCM',
-    openPositions: 10,
-    logo: FacebookLogo,
-  },
-  // Thêm các công ty khác...
-];
+const { Title, Text } = Typography;
 
 const TopCompanies = () => {
+  const displayedCompanies = employers.slice(0, 8); 
+
   return (
-    <section className="py-5 bg-light">
-      <div className="container">
-        <h2 className="h2 text-center mb-4">Công ty hàng đầu</h2>
-        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-          {companies.map((company) => (
-            <div key={company.name} className="col">
-              <div className="card h-100 shadow-sm hover-shadow">
+    <section style={{ padding: '50px 20px', background: '#f9f9f9' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
+        <Title level={2} style={{ marginBottom: '30px', fontWeight: '700', color: '#333' }}>
+          Công ty hàng đầu
+        </Title>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '20px',
+          }}
+        >
+          {displayedCompanies.map((employer) => (
+            <Card
+              key={employer.id_employer}
+              hoverable
+              style={{
+                borderRadius: '10px',
+                overflow: 'hidden',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                transition: 'all 0.3s',
+                textAlign: 'center',
+                background: '#fff',
+              }}
+              bodyStyle={{
+                padding: '20px',
+              }}
+            >
+              {/* Logo */}
+              <div style={{ marginBottom: '15px' }}>
                 <img
-                  src={company.logo}
-                  alt={company.name}
-                  className="card-img-top w-50 mx-auto mt-3"
+                  src={employer.logo || 'https://via.placeholder.com/80'} 
+                  alt={employer.company_name}
+                  style={{
+                    width: '80px',
+                    height: '80px',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    border: '2px solid #ddd',
+                    padding: '5px',
+                  }}
                 />
-                <div className="card-body text-center">
-                  <h3 className="card-title h5">{company.name}</h3>
-                  <p className="card-text text-muted">{company.industry}</p>
-                  <p className="card-text text-muted">{company.location}</p>
-                  <p className="text-primary">
-                    {company.openPositions} vị trí đang tuyển
-                  </p>
-                </div>
               </div>
-            </div>
+              {/* Tên Công Ty */}
+              <Tooltip title={employer.company_name}>
+                <Title
+                  level={4}
+                  style={{
+                    marginBottom: '10px',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    color: '#333',
+                  }}
+                >
+                  {employer.company_name}
+                </Title>
+              </Tooltip>
+              {/* Địa Chỉ */}
+              <Tooltip title={employer.company_address}>
+                <Text
+                  style={{
+                    display: 'block',
+                    color: '#555',
+                    marginBottom: '5px',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  <EnvironmentOutlined style={{ marginRight: '5px', color: '#888' }} />
+                  {employer.company_address}
+                </Text>
+              </Tooltip>
+              {/* Website */}
+              <Tooltip title={employer.company_website}>
+                <Text
+                  style={{
+                    display: 'block',
+                    color: '#777',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  🌐 {employer.company_website}
+                </Text>
+              </Tooltip>
+            </Card>
           ))}
         </div>
+        <Button
+          type="primary"
+          href="/companies"
+          style={{
+            marginTop: '20px',
+            background: 'linear-gradient(to right, #020024, #cc0a9d)',
+            border: 'none',
+            borderRadius: '5px',
+            padding: '10px 20px',
+            color: '#fff',
+            fontWeight: 'bold',
+            fontSize: '16px',
+            textDecoration: 'none',
+          }}
+        >
+          Xem thêm
+        </Button>
       </div>
     </section>
   );

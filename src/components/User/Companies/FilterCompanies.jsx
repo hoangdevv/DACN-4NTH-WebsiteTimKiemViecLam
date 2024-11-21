@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Checkbox, Button } from 'antd';  // Import các component từ antd
 import locations from '../../data/locations';
 
 const FilterCompanies = () => {
@@ -14,10 +15,9 @@ const FilterCompanies = () => {
         {displayedLocations.map((location, index) => (
           <li key={index} className="mb-2">
             <div className="form-check d-flex align-items-center">
-              <input
-                className="form-check-input me-2"
-                type="checkbox"
-                id={`location-${index}`}
+              <Checkbox 
+                id={`location-${index}`} 
+                className="me-2"
               />
               <label
                 className="form-check-label"
@@ -30,13 +30,14 @@ const FilterCompanies = () => {
           </li>
         ))}
         <li className="mt-2">
-          <button 
+          <Button 
             onClick={() => setShowAll(!showAll)} 
-            className="btn btn-link p-0 text-primary" 
-            style={{ textDecoration: 'none' }}
+            type="link" 
+            className="p-0" 
+            style={{ textDecoration: 'none', color: 'rgb(204, 10, 157)'}}
           >
             {showAll ? "Thu gọn" : "Tất cả"}
-          </button>
+          </Button>
         </li>
       </ul>
     </div>

@@ -1,42 +1,99 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import { Layout, Menu, Dropdown, Button, Space } from 'antd';
+import { 
+  MessageOutlined, 
+  HomeOutlined, 
+  LoginOutlined, 
+  UserAddOutlined 
+} from '@ant-design/icons';
 import logo from '../../../assets/logos/logo.png';
 
-const Header = () => {
+const { Header } = Layout;
+
+const HeaderComponent = () => {
+  // Dropdown menu for registration/login
+  const accountMenu = (
+    <Menu>
+      <Menu.Item key="register" icon={<UserAddOutlined />}>
+        <a href="/registerEmployer" style={{ textDecoration: 'none' }}>Đăng ký</a>
+      </Menu.Item>
+      <Menu.Item key="login" icon={<LoginOutlined />}>
+        <a href="/loginEmployer" style={{ textDecoration: 'none' }}>Đăng nhập</a>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
-      <Navbar expand="lg" sticky="top" className="border-bottom" style={{ backgroundColor: '#000D2C' }}>
-          <Container fluid>
-              {/* Logo */}
-              <Navbar.Brand href="/">
-                  <img
-                      src={logo} 
-                      alt="CareerLink Logo"
-                      style={{ height: '40px'}}
-                  />
-              </Navbar.Brand>
-              
-              {/* Right Navigation Links */}
-              <Nav className="d-flex align-items-center">
-                  <Nav.Link href="#chat" className="me-3 text-white">
-                      <i className="bi bi-chat-dots"></i> Trò chuyện
-                  </Nav.Link>
-                  <NavDropdown 
-                      title={<span style={{ color: '#ffffff' }}><i className="bi bi-buildings"></i> Đăng ký</span>} 
-                      id="account-dropdown"
-                      style={{ border: '1px solid #ccc', borderRadius: '10px' }}
-                      className="me-3"
-                  >
-                      <NavDropdown.Item href="/registerEmployer">Đăng ký</NavDropdown.Item>
-                      <NavDropdown.Item href="/loginEmployer">Đăng nhập</NavDropdown.Item>
-                  </NavDropdown>
-                  <Nav.Link href="/" className="text-white">Người tìm việc</Nav.Link>
-              </Nav>
-          </Container>
-      </Navbar>
+    <Header 
+      style={{ 
+        backgroundColor: 'rgb(2, 0, 36)', // Đổi màu background
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'space-between',
+        padding: '0 24px',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1,
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)'
+      }}
+    >
+      {/* Logo */}
+      <div>
+        <a href="/" style={{ textDecoration: 'none' }}>
+          <img 
+            src={logo} 
+            alt="CareerLink Logo" 
+            style={{ 
+              height: '40px', 
+              verticalAlign: 'middle' 
+            }} 
+          />
+        </a>
+      </div>
+
+      {/* Navigation Menu */}
+      <Space size="middle">
+        <Button 
+          type="text" 
+          icon={<MessageOutlined />} 
+          href="#chat"
+          style={{ 
+            color: 'white', 
+            textDecoration: 'none' // Tắt gạch chân
+          }}
+        >
+          Trò chuyện
+        </Button>
+
+        <Dropdown overlay={accountMenu} placement="bottomRight">
+          <Button 
+            type="default" 
+            icon={<HomeOutlined />}
+            style={{ 
+              backgroundColor: 'transparent', 
+              color: 'white',
+              border: '1px solid rgba(255,255,255,0.3)',
+              borderRadius: '8px',
+              textDecoration: 'none' // Tắt gạch chân
+            }}
+          >
+            Đăng ký
+          </Button>
+        </Dropdown>
+
+        <Button 
+          type="text" 
+          href="/"
+          style={{ 
+            color: 'white', 
+            textDecoration: 'none' // Tắt gạch chân
+          }}
+        >
+          Người tìm việc
+        </Button>
+      </Space>
+    </Header>
   );
 };
 
-export default Header;
+export default HeaderComponent;

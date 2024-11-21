@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { accounts } from '../../../components/data/accounts';
-import { Form, Button, Card, Container, Row, Col } from 'react-bootstrap';
+import { Layout, Card, Row, Col, Typography, Form, Input, Button, Divider, List } from 'antd';
 import Header from '../../../components/Employer/common/Header';
 import Footer from '../../../components/User/common/Footer';
 
+const { Title, Text } = Typography;
+
 const LoginEmployer = ({ setUser }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -17,15 +18,14 @@ const LoginEmployer = ({ setUser }) => {
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  
+  const handleSubmit = () => {
     const employer = accounts.find(
-      (u) => u.email === formData.email && 
-      u.password === formData.password && 
-      u.account_type === 'employer'
+      (u) =>
+        u.email === formData.email &&
+        u.password === formData.password &&
+        u.account_type === 'employer'
     );
-  
+
     if (employer) {
       localStorage.setItem('user', JSON.stringify(employer));
       setUser(employer);
@@ -36,70 +36,101 @@ const LoginEmployer = ({ setUser }) => {
   };
 
   return (
-    <div>
+    <Layout>
       <Header />
-      <Container className="d-flex justify-content-center align-items-center mt-5 mb-5">
-        <Card className="shadow p-5" style={{ maxWidth: '900px', width: '100%' }}>
-          <Row>
+      <Layout.Content style={{ padding: '50px 20px' }}>
+        <Card
+          style={{
+            maxWidth: '900px',
+            margin: 'auto',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          <Row gutter={32}>
             {/* Form Đăng nhập */}
-            <Col md={6} className="border-end">
-              <h4 className="mb-4 text-primary">Nhà tuyển dụng đăng nhập</h4>
-              {error && <p className="error text-danger">{error}</p>}
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formEmail">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control
+            <Col md={12} xs={24} style={{ borderRight: '1px solid #f0f0f0' }}>
+              <Title level={4} style={{ color: 'rgb(204, 10, 157)', marginBottom: '20px', textAlign: 'center' }}>
+                Nhà tuyển dụng đăng nhập
+              </Title>
+              {error && <Text type="danger">{error}</Text>}
+              <Form layout="vertical" onFinish={handleSubmit} requiredMark={false}>
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  rules={[
+                    { required: true, message: 'Vui lòng nhập email!' },
+                    { type: 'email', message: 'Email không hợp lệ!' },
+                  ]}
+                >
+                  <Input
                     type="email"
-                    name="email"
                     placeholder="Email"
                     value={formData.email}
-                    onChange={handleChange}
-                    required
+                    onChange={(e) => handleChange(e)}
                   />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formPassword">
-                  <Form.Label>Mật khẩu</Form.Label>
-                  <Form.Control
-                    type={showPassword ? 'text' : 'password'}
-                    name="password"
+                </Form.Item>
+                <Form.Item
+                  label="Mật khẩu"
+                  name="password"
+                  rules={[
+                    { required: true, message: 'Vui lòng nhập mật khẩu!' },
+                  ]}
+                >
+                  <Input.Password
                     placeholder="Mật khẩu"
                     value={formData.password}
-                    onChange={handleChange}
-                    required
+                    onChange={(e) => handleChange(e)}
                   />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formShowPassword">
-                  <Form.Check
-                    type="checkbox"
-                    label="Hiển thị mật khẩu"
-                    onChange={() => setShowPassword(!showPassword)}
-                  />
-                </Form.Group>
-                <Button variant="primary" type="submit" className="w-100 mb-3">
-                  Đăng nhập
-                </Button>
+                </Form.Item>
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    block
+                    style={{
+                      background: 'linear-gradient(to right, rgb(2, 0, 36), rgb(204, 10, 157))',
+                      border: 'none',
+                    }}
+                  >
+                    Đăng nhập
+                  </Button>
+                </Form.Item>
               </Form>
             </Col>
 
             {/* Phần bên phải: Đăng ký */}
-            <Col md={6} className="text-center">
-              <h5 className="mt-4">Bạn chưa có tài khoản?</h5>
-              <Button variant="warning" href="/RegisterEmployer" className="my-4 px-4">
+            <Col md={12} xs={24} style={{ textAlign: 'center' }}>
+              <Title level={5}>Bạn chưa có tài khoản?</Title>
+              <Button
+                type="default"
+                href="/RegisterEmployer"
+                size="large"
+                style={{
+                  margin: '20px 0',
+                  backgroundColor: '#FFC107',
+                  color: '#000',
+                  border: 'none',
+                  textDecoration: 'none', 
+                }}
+              >
                 Đăng ký
               </Button>
-              <p>Tham gia ngay hôm nay để truy cập hàng ngàn ứng viên sáng giá!</p>
-              <hr />
-              <p><strong>Tại sao đăng ký?</strong></p>
-              <ul className="list-unstyled">
-                <li>Đăng công việc để nhận được những hồ sơ phù hợp</li>
-                <li>Nhận thông báo hồ sơ qua email</li>
-              </ul>
+              <Text style={{ display: 'block', marginTop: '10px' }}>
+                Tham gia ngay hôm nay để truy cập hàng ngàn ứng viên sáng giá!
+              </Text>
+              <Divider />
+              <Title level={5}>Tại sao đăng ký?</Title>
+              <div style={{textAlign: 'center'}}>
+                <p>Đăng công việc để nhận được những hồ sơ phù hợp</p>
+                <p>Nhận thông báo hồ sơ qua emai</p>
+              </div>
+              
             </Col>
           </Row>
         </Card>
-      </Container>
+      </Layout.Content>
       <Footer />
-    </div>
+    </Layout>
   );
 };
 

@@ -115,7 +115,7 @@ const ListJobs = () => {
               />
               {/* Job Info */}
               <div style={{ flexGrow: 1 }}>
-                <h3 style={{ margin: 0, fontWeight: 'bold', fontSize: '18px', color: '#333' }}>
+                <h3 style={{ margin: 0, fontWeight: 'bold', fontSize: '18px', color: '#333', textAlign: 'left'}}>
                   {job.title}
                 </h3>
                 <div

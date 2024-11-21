@@ -46,6 +46,7 @@ const Login = ({ setUser }) => {
           layout="vertical"
           onFinish={handleSubmit}
           className="login-form"
+          requiredMark={false}
         >
           <Form.Item
             label="Email"

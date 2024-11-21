@@ -14,7 +14,7 @@
   position: relative;
   width: 100%;
   max-width: 500px;
-  min-height: 400px; /* Cố định chiều cao để luôn ở giữa */
+  min-height: 400px; /* Cố định chiều cao để form luôn ở giữa */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,6 +69,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Các tiêu đề trong form */
 .form-content h2,
 .form-content h3 {
   text-align: center;
@@ -76,21 +77,26 @@
   margin-bottom: 1.5rem;
 }
 
+/* Điều chỉnh khoảng cách các mục trong form */
 .form-content .ant-form-item {
   margin-bottom: 1rem;
 }
 
+/* Input kích thước bình thường */
 .form-content .ant-input,
 .form-content .ant-input-password {
-  padding: 0.8rem;
-  font-size: 1rem;
+  padding: 4px 11px; /* Sử dụng padding mặc định */
+  font-size: 14px;   /* Kích thước chữ mặc định */
+  height: auto;      /* Chiều cao tự động */
 }
 
+/* Button trong form */
 .form-content .ant-btn {
-  font-size: 1rem;
-  padding: 0.8rem;
+  font-size: 14px; /* Kích thước nút mặc định */
+  padding: 4px 15px;
 }
 
+/* Button chính (Đăng ký, Xác thực) */
 .form-content .ant-btn-primary {
   background-color: #4a90e2;
   border-color: #4a90e2;
@@ -102,15 +108,18 @@
   border-color: #357abd;
 }
 
+/* Button phụ (Trở lại) */
 .form-content .ant-btn-default {
   margin-top: 0.5rem;
   width: 100%;
 }
 
+/* Checkbox */
 .form-content .ant-checkbox-wrapper {
   margin-top: 1rem;
 }
 
+/* Typography */
 .form-content .ant-typography {
   text-align: center;
   color: #555;

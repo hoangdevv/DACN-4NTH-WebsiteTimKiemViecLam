@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox, Typography, message } from 'antd';
-import '../../../styles/Register.css'; 
+import { Form, Input, Button, Checkbox, Typography, message, Row, Col } from 'antd';
+import '../../../styles/Register.css';
 
 const { Title, Text } = Typography;
 
@@ -31,33 +31,39 @@ const Register = () => {
   };
 
   const handleBack = () => {
-    setCurrentStep('transition-register'); // Kích hoạt hiệu ứng quay lại đăng ký
-    setTimeout(() => setCurrentStep('register'), 500); // Sau animation, hiển thị form đăng ký
+    setCurrentStep('transition-register');
+    setTimeout(() => setCurrentStep('register'), 500);
   };
 
   return (
     <div className="register-container">
       <div className={`form-wrapper ${currentStep}`}>
+        {/* Form Đăng ký */}
         <div className={`form-content ${currentStep === 'register' ? 'active' : ''}`}>
-          <Title level={2} style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#333' }}>
+          <Title level={1} style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#333' }}>
             Đăng ký tài khoản
           </Title>
-          <Form form={form} layout="vertical" onFinish={handleRegisterSubmit}>
-            <Form.Item
-              label="Họ"
-              name="firstName"
-              rules={[{ required: true, message: 'Vui lòng nhập họ!' }]}
-            >
-              <Input placeholder="Nhập họ" />
-            </Form.Item>
-
-            <Form.Item
-              label="Tên"
-              name="lastName"
-              rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
-            >
-              <Input placeholder="Nhập tên" />
-            </Form.Item>
+          <Form form={form} layout="vertical" onFinish={handleRegisterSubmit} requiredMark={false}>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  label="Họ"
+                  name="firstName"
+                  rules={[{ required: true, message: 'Vui lòng nhập họ!' }]}
+                >
+                  <Input placeholder="Nhập họ" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label="Tên"
+                  name="lastName"
+                  rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
+                >
+                  <Input placeholder="Nhập tên" />
+                </Form.Item>
+              </Col>
+            </Row>
 
             <Form.Item
               label="Email"
@@ -115,6 +121,7 @@ const Register = () => {
           </Form>
         </div>
 
+        {/* Form Xác thực */}
         <div className={`form-content ${currentStep === 'verify' ? 'active' : ''}`}>
           <Title level={3} style={{ textAlign: 'center', marginBottom: '1rem', color: '#333' }}>
             Nhập mã xác thực

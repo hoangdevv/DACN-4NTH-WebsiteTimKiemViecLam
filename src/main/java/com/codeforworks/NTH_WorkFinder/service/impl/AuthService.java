@@ -99,6 +99,7 @@ public class AuthService implements IAuthService {
 
         return userRepository.save(user);
     }
+
     @Transactional
     @Override
     public Employer registerEmployer(EmployerRegisterDTO employerDTO) {

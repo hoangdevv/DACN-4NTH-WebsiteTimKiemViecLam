@@ -13,27 +13,25 @@ public class RoleInitializer implements CommandLineRunner {
     public RoleInitializer(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
-    //USER: Có các vai trò bổ sung như PREMIUM_USER, BASIC_USER.
-    //EMPLOYER: Có các vai trò bổ sung như HR_MANAGER, SUPERVISOR.
-    //ADMIN: Có thể có vai trò như SUPER_ADMIN, MODERATOR.
+
     @Override
     public void run(String... args) {
         // Kiểm tra và tạo vai trò nếu chưa tồn tại
-        if (roleRepository.findByRoleName("BASIC_USER").isEmpty()) {
+        if (roleRepository.findByRoleName("ROLE_USER").isEmpty()) {
             Role basicUserRole = new Role();
-            basicUserRole.setRoleName("BASIC_USER");
+            basicUserRole.setRoleName("ROLE_USER");
             roleRepository.save(basicUserRole);
         }
 
-        if (roleRepository.findByRoleName("HR_MANAGER").isEmpty()) {
+        if (roleRepository.findByRoleName("ROLE_MANAGER").isEmpty()) {
             Role hrManagerRole = new Role();
-            hrManagerRole.setRoleName("HR_MANAGER");
+            hrManagerRole.setRoleName("ROLE_MANAGER");
             roleRepository.save(hrManagerRole);
         }
 
-        if (roleRepository.findByRoleName("ADMIN").isEmpty()) {
+        if (roleRepository.findByRoleName("ROLE_ADMIN").isEmpty()) {
             Role adminRole = new Role();
-            adminRole.setRoleName("ADMIN");
+            adminRole.setRoleName("ROLE_ADMIN");
             roleRepository.save(adminRole);
         }
     }

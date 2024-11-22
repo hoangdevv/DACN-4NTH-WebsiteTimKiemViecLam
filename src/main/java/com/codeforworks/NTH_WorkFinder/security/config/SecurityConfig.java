@@ -15,6 +15,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -25,6 +27,19 @@ public class SecurityConfig {
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+//    QUYỀN ALL USER
+    private static final List<String> PERMIT_ALL_URLS = List.of(
+            "/api/auth/**",
+            "/oauth2/**",
+            "/public/**"
+    );
+
+//    QUYỀN EMPLOYER
+    private static final List<String> EMPLOYER_ONLY_URLS = List.of(
+            "/api/employer/**",
+            "/api/job/**",
+            "/api/interview/**"
+    );
 
     /**
      * Cấu hình AuthenticationManager để quản lý xác thực người dùng
@@ -46,15 +61,11 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sử dụng Stateless session
 
                 // Cấu hình phân quyền
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/oauth2/**").permitAll()
-//                        .requestMatchers("/auth/login/user").hasRole("USER")
-//                        .requestMatchers("/auth/login/employer").hasRole("EMPLOYER")
-//                        .requestMatchers("/auth/login/admin").hasRole("ADMIN")
-                        // Tất cả các yêu cầu khác cần xác thực
-                        .anyRequest().authenticated()
-                )
+                .authorizeHttpRequests(auth -> {
+                    PERMIT_ALL_URLS.forEach(url -> auth.requestMatchers(url).permitAll());
+                    EMPLOYER_ONLY_URLS.forEach(url -> auth.requestMatchers(url).hasRole("EMPLOYER"));
+                    auth.anyRequest().authenticated(); // Các yêu cầu khác cần xác thực
+                })
 
                 // Cấu hình OAuth2
                 .oauth2Login(oauth2 -> oauth2

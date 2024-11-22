@@ -11,7 +11,10 @@ import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
-    private Account account;
+    private String username;
+    private String password;
+    private boolean active;
+    private List<GrantedAuthority> authorities;
 
     public CustomUserDetails(Account account) {
         this.account = account;

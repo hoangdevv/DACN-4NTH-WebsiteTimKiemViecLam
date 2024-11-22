@@ -26,7 +26,7 @@ const HeaderComponent = () => {
   return (
     <Header 
       style={{ 
-        backgroundColor: 'rgb(2, 0, 36)', // Đổi màu background
+        backgroundColor: 'rgb(2, 0, 36)', 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'space-between',
@@ -59,7 +59,7 @@ const HeaderComponent = () => {
           href="#chat"
           style={{ 
             color: 'white', 
-            textDecoration: 'none' // Tắt gạch chân
+            textDecoration: 'none' 
           }}
         >
           Trò chuyện
@@ -74,10 +74,10 @@ const HeaderComponent = () => {
               color: 'white',
               border: '1px solid rgba(255,255,255,0.3)',
               borderRadius: '8px',
-              textDecoration: 'none' // Tắt gạch chân
+              textDecoration: 'none' 
             }}
           >
-            Đăng ký
+            Đăng ký / Đăng nhập
           </Button>
         </Dropdown>
 
@@ -86,7 +86,7 @@ const HeaderComponent = () => {
           href="/"
           style={{ 
             color: 'white', 
-            textDecoration: 'none' // Tắt gạch chân
+            textDecoration: 'none' 
           }}
         >
           Người tìm việc

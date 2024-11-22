@@ -136,7 +136,7 @@ const HeaderComponent = ({ user, setUser }) => {
           )}
           <Button
             type="link"
-            href="/homeEmployer"
+            href="/"
             style={{
               textDecoration: 'none',
               color: '#000',

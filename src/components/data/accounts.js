@@ -21,7 +21,7 @@ export const accounts = [
     id_account: "A003",
     email: "employer@gmail.com",
     password: "employer123",
-    full_name: "Employer User",
+    full_name: "Nhà tuyển dụng hehe",
     account_type: "employer",
     created_at: "2024-01-10",
     updated_at: "2024-01-20",

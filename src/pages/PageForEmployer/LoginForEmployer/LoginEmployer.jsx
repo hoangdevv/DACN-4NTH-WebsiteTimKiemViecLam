@@ -1,35 +1,32 @@
-import React, { useState } from 'react';
+import {React, useState} from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { accounts } from '../../../components/data/accounts';
-import { Layout, Card, Row, Col, Typography, Form, Input, Button, Divider, List } from 'antd';
+import { Layout, Card, Row, Col, Typography, Form, Input, Button, Divider } from 'antd';
 import Header from '../../../components/Employer/common/Header';
 import Footer from '../../../components/User/common/Footer';
 
 const { Title, Text } = Typography;
 
 const LoginEmployer = ({ setUser }) => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [form] = Form.useForm(); // Sử dụng Form API của antd
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
-  };
+  const handleSubmit = (values) => {
+    const { email, password } = values;
 
-  const handleSubmit = () => {
     const employer = accounts.find(
       (u) =>
-        u.email === formData.email &&
-        u.password === formData.password &&
-        u.account_type === 'employer'
+        u.email === email &&
+        u.password === password &&
+        u.account_type === "employer"
     );
 
     if (employer) {
       localStorage.setItem('user', JSON.stringify(employer));
       setUser(employer);
-      navigate('/employerDashboard');
+      navigate('/dashboard');
     } else {
       setError('Email hoặc mật khẩu không chính xác hoặc không phải nhà tuyển dụng.');
     }
@@ -49,11 +46,23 @@ const LoginEmployer = ({ setUser }) => {
           <Row gutter={32}>
             {/* Form Đăng nhập */}
             <Col md={12} xs={24} style={{ borderRight: '1px solid #f0f0f0' }}>
-              <Title level={4} style={{ color: 'rgb(204, 10, 157)', marginBottom: '20px', textAlign: 'center' }}>
+              <Title
+                level={4}
+                style={{
+                  color: 'rgb(204, 10, 157)',
+                  marginBottom: '20px',
+                  textAlign: 'center',
+                }}
+              >
                 Nhà tuyển dụng đăng nhập
               </Title>
               {error && <Text type="danger">{error}</Text>}
-              <Form layout="vertical" onFinish={handleSubmit} requiredMark={false}>
+              <Form
+                form={form}
+                layout="vertical"
+                onFinish={handleSubmit}
+                requiredMark={false}
+              >
                 <Form.Item
                   label="Email"
                   name="email"
@@ -62,12 +71,7 @@ const LoginEmployer = ({ setUser }) => {
                     { type: 'email', message: 'Email không hợp lệ!' },
                   ]}
                 >
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={(e) => handleChange(e)}
-                  />
+                  <Input type="email" placeholder="Email" />
                 </Form.Item>
                 <Form.Item
                   label="Mật khẩu"
@@ -76,11 +80,7 @@ const LoginEmployer = ({ setUser }) => {
                     { required: true, message: 'Vui lòng nhập mật khẩu!' },
                   ]}
                 >
-                  <Input.Password
-                    placeholder="Mật khẩu"
-                    value={formData.password}
-                    onChange={(e) => handleChange(e)}
-                  />
+                  <Input.Password placeholder="Mật khẩu" />
                 </Form.Item>
                 <Form.Item>
                   <Button
@@ -110,7 +110,7 @@ const LoginEmployer = ({ setUser }) => {
                   backgroundColor: '#FFC107',
                   color: '#000',
                   border: 'none',
-                  textDecoration: 'none', 
+                  textDecoration: 'none',
                 }}
               >
                 Đăng ký
@@ -120,11 +120,10 @@ const LoginEmployer = ({ setUser }) => {
               </Text>
               <Divider />
               <Title level={5}>Tại sao đăng ký?</Title>
-              <div style={{textAlign: 'center'}}>
+              <div style={{ textAlign: 'center' }}>
                 <p>Đăng công việc để nhận được những hồ sơ phù hợp</p>
-                <p>Nhận thông báo hồ sơ qua emai</p>
+                <p>Nhận thông báo hồ sơ qua email</p>
               </div>
-              
             </Col>
           </Row>
         </Card>

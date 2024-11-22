@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Divider, Typography, Space, message } from 'antd';
 import { GoogleOutlined, GithubOutlined } from '@ant-design/icons';
 import { accounts } from '../../../components/data/accounts';
-import '../../../styles/Login.css'; 
+import '../../../styles/Login.css';
 
 const { Link, Text } = Typography;
 
@@ -15,9 +15,7 @@ const Login = ({ setUser }) => {
   const handleSubmit = (values) => {
     const user = accounts.find(
       (u) =>
-        u.email === values.email &&
-        u.password === values.password &&
-        u.account_type === 'user'
+        u.email === values.email && u.password === values.password
     );
 
     if (user) {
@@ -29,11 +27,20 @@ const Login = ({ setUser }) => {
       };
 
       localStorage.setItem('user', JSON.stringify(userData));
-
       setUser(user);
-      navigate('/');
+
+      // Điều kiện chuyển hướng dựa trên account_type
+      if (user.account_type === 'admin') {
+        navigate('/admin');
+      } else if (user.account_type === 'user') {
+        navigate('/');
+      } else if (user.account_type === 'employer') {
+        navigate('/dashboard');
+      } else {
+        message.error('Loại tài khoản không hợp lệ.');
+      }
     } else {
-      message.error('Email hoặc mật khẩu không chính xác hoặc không phải người dùng.');
+      message.error('Email hoặc mật khẩu không chính xác.');
     }
   };
 

@@ -9,6 +9,7 @@ import {
   BankOutlined,
   FileTextOutlined,
   MessageOutlined,
+  BookOutlined,
 } from '@ant-design/icons';
 import logo from '../../../assets/logos/logo.png';
 
@@ -91,7 +92,7 @@ const HeaderComponent = ({ user, setUser }) => {
               Cẩm nang việc làm
             </a>
           </Menu.Item>
-          <Menu.Item key="cv-template" icon={<FileTextOutlined />}>
+          <Menu.Item key="cv-template" icon={<BookOutlined />}>
             <a href="#cv-template" style={{ textDecoration: 'none', color: '#000' }}>
               Mẫu CV Xin Việc
             </a>
@@ -136,7 +137,7 @@ const HeaderComponent = ({ user, setUser }) => {
           )}
           <Button
             type="link"
-            href="/"
+            href="/homeEmployer"
             style={{
               textDecoration: 'none',
               color: '#000',

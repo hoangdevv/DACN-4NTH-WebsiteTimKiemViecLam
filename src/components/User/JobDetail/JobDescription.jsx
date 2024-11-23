@@ -11,6 +11,7 @@ import {
   FileTextOutlined,
 } from "@ant-design/icons";
 import { Affix, Menu } from "antd";
+import '../../../styles/JobDescription.module.css';
 
 const JobDescription = ({ jobId }) => {
   const [activeSection, setActiveSection] = useState("description");
@@ -74,18 +75,18 @@ const JobDescription = ({ jobId }) => {
   };
 
   const menuItemDefaultStyles = {
-    color: "black", // Màu mặc định là đen
-    borderBottom: "none", // Loại bỏ border mặc định
+    color: "black", 
+    borderBottom: "none",
   };
 
   const menuItemHoverStyles = {
-    color: "rgb(204, 10, 157)", // Màu khi hover
-    borderBottom: "2px solid rgb(204, 10, 157)", // Thanh ngang khi hover
+    color: "rgb(204, 10, 157)", 
+    borderBottom: "2px solid rgb(204, 10, 157)", 
   };
 
   const menuItemSelectedStyles = {
-    color: "rgb(204, 10, 157)", // Màu khi được chọn
-    borderBottom: "2px solid rgb(204, 10, 157)", // Thanh ngang khi được chọn
+    color: "rgb(204, 10, 157)", 
+    borderBottom: "2px solid rgb(204, 10, 157)", 
   };
 
   return (

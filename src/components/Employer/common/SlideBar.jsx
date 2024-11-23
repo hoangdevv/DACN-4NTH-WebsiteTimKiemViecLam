@@ -4,8 +4,14 @@ import { Link, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-const SlideBar = ({ user }) => {
+const SlideBar = ({ user, setUser }) => {
   const location = useLocation(); 
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+    window.location.href = '/'; 
+  };
 
   return (
     <div
@@ -134,6 +140,18 @@ const SlideBar = ({ user }) => {
               <i className="bi bi-gear-fill me-2"></i> Cài đặt tài khoản
             </Link>
           </li>
+
+          <hr />
+
+          <li className="nav-item">
+            <button
+              className="btn btn-link text-white nav-link"
+              style={{ textDecoration: 'none' }}
+              onClick={handleLogout}
+            >
+              <i className="bi bi-box-arrow-right me-2"></i> Đăng xuất
+            </button>
+          </li>
         </ul>
       </div>
     </div>
@@ -145,6 +163,7 @@ SlideBar.propTypes = {
     full_name: PropTypes.string,
     account_type: PropTypes.string,
   }),
+  setUser: PropTypes.func.isRequired,
 };
 
 export default SlideBar;

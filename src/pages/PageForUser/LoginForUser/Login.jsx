@@ -30,13 +30,9 @@ const Login = ({ setUser }) => {
       setUser(user);
 
       // Điều kiện chuyển hướng dựa trên account_type
-      if (user.account_type === 'admin') {
-        navigate('/admin');
-      } else if (user.account_type === 'user') {
+      if (user.account_type === 'user') {
         navigate('/');
-      } else if (user.account_type === 'employer') {
-        navigate('/dashboard');
-      } else {
+      }else {
         message.error('Loại tài khoản không hợp lệ.');
       }
     } else {

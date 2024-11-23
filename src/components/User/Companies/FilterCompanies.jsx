@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Checkbox, Button } from 'antd';  // Import các component từ antd
+import { Checkbox, Button } from 'antd';  
 import locations from '../../data/locations';
 
 const FilterCompanies = () => {

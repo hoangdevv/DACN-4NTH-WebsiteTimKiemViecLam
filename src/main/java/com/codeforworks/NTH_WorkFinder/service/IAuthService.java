@@ -5,6 +5,7 @@ import com.codeforworks.NTH_WorkFinder.dto.auth.login.LoginResponseDTO;
 import com.codeforworks.NTH_WorkFinder.dto.auth.register.EmployerRegisterDTO;
 import com.codeforworks.NTH_WorkFinder.dto.auth.register.UserRegisterDTO;
 import com.codeforworks.NTH_WorkFinder.model.Account;
+import com.codeforworks.NTH_WorkFinder.model.Admin;
 import com.codeforworks.NTH_WorkFinder.model.Employer;
 import com.codeforworks.NTH_WorkFinder.model.User;
 import jakarta.mail.MessagingException;
@@ -12,13 +13,19 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public interface IAuthService {
 
-    User registerUser(UserRegisterDTO userDTO)throws MessagingException;
+    void registerUser(UserRegisterDTO userDTO) throws MessagingException;
 
     Employer registerEmployer(EmployerRegisterDTO employerDTO)throws MessagingException;
+
+    Admin createAdmin(String email, String password);
 
     void verifyAccount(String email, String code);
 
     void resendVerificationCode(String email) throws MessagingException;
 
     LoginResponseDTO login(LoginRequestDTO loginRequest, Account.AccountType expectedAccountType, HttpServletResponse response)throws MessagingException;
+
+    boolean sendPasswordResetEmail(String email) throws MessagingException;
+
+    boolean resetPassword(String email, String code, String newPassword);
 }

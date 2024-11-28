@@ -3,10 +3,15 @@ package com.codeforworks.NTH_WorkFinder.controller;
 import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateProfileDTO;
 import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateRequestDTO;
 import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateResponseDTO;
+import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateSkillRequestDTO;
+import com.codeforworks.NTH_WorkFinder.dto.error.ErrorResponse;
+import com.codeforworks.NTH_WorkFinder.security.user.CustomUserDetails;
 import com.codeforworks.NTH_WorkFinder.service.ICandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,10 +39,22 @@ public class CandidateController {
 
 //    Tạo mới một ứng viên
     @PostMapping
-    public ResponseEntity<CandidateProfileDTO> createCandidate(@RequestBody CandidateRequestDTO candidateRequestDTO) {
-        CandidateProfileDTO createdCandidate = candidateService.createCandidate(candidateRequestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCandidate);
+    public ResponseEntity<Object> createCandidate(@RequestBody CandidateRequestDTO candidateRequestDTO, Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long authenticatedUserId = userDetails.getAccount().getUser().getId();
+
+        try {
+            CandidateProfileDTO createdCandidate = candidateService.createCandidate(candidateRequestDTO, authenticatedUserId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdCandidate);
+        } catch (AccessDeniedException ex) {
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN.value(), ex.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+        } catch (RuntimeException ex) {
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
     }
+
 
 //    Cập nhật thông tin ứng viên
     @PutMapping("/{id}")

@@ -1,5 +1,6 @@
 package com.codeforworks.NTH_WorkFinder.controller;
 
+import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateProfileDTO;
 import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateSkillRequestDTO;
 import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateSkillResponseDTO;
 import com.codeforworks.NTH_WorkFinder.service.ICandidateSkillService;
@@ -17,12 +18,16 @@ public class CandidateSkillController {
     @Autowired
     private ICandidateSkillService candidateSkillService;
 
-//    Tạo kỹ năng mới cho ứng viên
-    @PostMapping
-    public ResponseEntity<CandidateSkillResponseDTO> createCandidateSkill(@RequestBody CandidateSkillRequestDTO candidateSkillRequestDTO) {
-        CandidateSkillResponseDTO createdCandidateSkill = candidateSkillService.createCandidateSkill(candidateSkillRequestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCandidateSkill);
+    //    Them ki nang vao ứng viên
+    @PostMapping("/{candidateId}")
+    public ResponseEntity<CandidateProfileDTO> addSkillToCandidate
+    (@PathVariable Long candidateId,
+     @RequestBody CandidateSkillRequestDTO candidateSkillRequestDTO) {
+
+        CandidateProfileDTO updatedProfile = candidateSkillService.addSkillToCandidate(candidateId, candidateSkillRequestDTO);
+        return ResponseEntity.ok(updatedProfile);
     }
+
 
 //    Lấy thông tin kỹ năng của ứng viên theo id
     @GetMapping("/{id}")
@@ -38,19 +43,5 @@ public class CandidateSkillController {
         return ResponseEntity.ok(candidateSkills);
     }
 
-//    Cập nhật kỹ năng của ứng viên
-    @PutMapping("/{id}")
-    public ResponseEntity<CandidateSkillResponseDTO> updateCandidateSkill(
-            @PathVariable Long id,
-            @RequestBody CandidateSkillRequestDTO candidateSkillRequestDTO) {
-        CandidateSkillResponseDTO updatedCandidateSkill = candidateSkillService.updateCandidateSkill(id, candidateSkillRequestDTO);
-        return ResponseEntity.ok(updatedCandidateSkill);
-    }
 
-//    Xóa kỹ năng của ứng viên
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCandidateSkill(@PathVariable Long id) {
-        candidateSkillService.deleteCandidateSkill(id);
-        return ResponseEntity.noContent().build();
-    }
 }

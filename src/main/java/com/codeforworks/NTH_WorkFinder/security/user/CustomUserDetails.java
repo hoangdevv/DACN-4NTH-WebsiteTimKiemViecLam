@@ -1,31 +1,51 @@
 package com.codeforworks.NTH_WorkFinder.security.user;
 
 import com.codeforworks.NTH_WorkFinder.model.Account;
+import com.codeforworks.NTH_WorkFinder.model.Employer;
+import com.codeforworks.NTH_WorkFinder.model.PackagePermission;
+import com.codeforworks.NTH_WorkFinder.model.Subscription;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
-    private String username;
-    private String password;
-    private boolean active;
-    private List<GrantedAuthority> authorities;
+    private Account account;
 
     public CustomUserDetails(Account account) {
         this.account = account;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Lấy danh sách quyền (Role) của người dùng và ánh xạ thành SimpleGrantedAuthority
-        return account.getRoles().stream()
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+
+        // Thêm quyền dựa trên Role
+        authorities.addAll(account.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+
+        // Kiểm tra và xử lý các gói dịch vụ của Employer
+        if (account.getEmployer() != null) {
+            account.getEmployer().getSubscriptions().stream()
+                    .filter(Subscription::getIsActive)
+                    .flatMap(subscription -> subscription.getPackageEntity().getPackagePermissions().stream())
+                    .filter(PackagePermission::getIsActive)
+                    .map(permission -> new SimpleGrantedAuthority(permission.getPermission().getPermissionName()))
+                    .forEach(authorities::add);
+        }
+
+        return authorities;
     }
 
     @Override
@@ -57,4 +77,6 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return account.getStatus(); // Trả về trạng thái của tài khoản
     }
+
+
 }

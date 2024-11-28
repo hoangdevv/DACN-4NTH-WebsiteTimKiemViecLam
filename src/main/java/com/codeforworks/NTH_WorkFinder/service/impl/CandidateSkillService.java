@@ -1,7 +1,9 @@
 package com.codeforworks.NTH_WorkFinder.service.impl;
 
+import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateProfileDTO;
 import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateSkillRequestDTO;
 import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateSkillResponseDTO;
+import com.codeforworks.NTH_WorkFinder.mapper.CandidateMapper;
 import com.codeforworks.NTH_WorkFinder.mapper.CandidateSkillMapper;
 import com.codeforworks.NTH_WorkFinder.model.Candidate;
 import com.codeforworks.NTH_WorkFinder.model.CandidateSkill;
@@ -29,19 +31,33 @@ public class CandidateSkillService implements ICandidateSkillService {
     private SkillRepository skillRepository;
 
     @Override
-    public CandidateSkillResponseDTO createCandidateSkill(CandidateSkillRequestDTO candidateSkillRequestDTO) {
-        Candidate candidate = candidateRepository.findById(candidateSkillRequestDTO.getCandidateId())
-                .orElseThrow(() -> new RuntimeException("Candidate not found"));
+    public CandidateProfileDTO addSkillToCandidate(Long candidateId, CandidateSkillRequestDTO candidateSkillRequestDTO) {
+        // Lấy ứng viên từ database
+        Candidate candidate = candidateRepository.findById(candidateId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy Candidate"));
 
+        // Lấy kỹ năng từ database
         Skill skill = skillRepository.findById(candidateSkillRequestDTO.getSkillId())
-                .orElseThrow(() -> new RuntimeException("Skill not found"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy Skill"));
 
-        CandidateSkill candidateSkill = CandidateSkillMapper.INSTANCE.toCandidateSkillEntity(candidateSkillRequestDTO);
+        // Kiểm tra nếu ứng viên đã có kỹ năng này rồi
+        boolean exists = candidateSkillRepository.existsByCandidateAndSkill(candidate, skill);
+        if (exists) {
+            throw new RuntimeException("Ứng viên đã có kỹ năng này.");
+        }
+
+        // Tạo CandidateSkill
+        CandidateSkill candidateSkill = new CandidateSkill();
         candidateSkill.setCandidate(candidate);
         candidateSkill.setSkill(skill);
+        candidateSkill.setProficiencyLevel(CandidateSkill.ProficiencyLevel.valueOf(candidateSkillRequestDTO.getProficiencyLevel()));
 
-        CandidateSkill savedCandidateSkill = candidateSkillRepository.save(candidateSkill);
-        return CandidateSkillMapper.INSTANCE.toCandidateSkillResponseDTO(savedCandidateSkill);
+        // Lưu kỹ năng vào database
+        candidateSkillRepository.save(candidateSkill);
+
+        // Lấy lại thông tin ứng viên sau khi thêm kỹ năng
+        CandidateProfileDTO candidateProfileDTO = CandidateMapper.INSTANCE.toCandidateProfileDTO(candidate);
+        return candidateProfileDTO;
     }
 
     @Override
@@ -59,34 +75,4 @@ public class CandidateSkillService implements ICandidateSkillService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public CandidateSkillResponseDTO updateCandidateSkill(Long id, CandidateSkillRequestDTO candidateSkillRequestDTO) {
-        CandidateSkill candidateSkill = candidateSkillRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("CandidateSkill not found"));
-
-        if (candidateSkillRequestDTO.getCandidateId() != null) {
-            Candidate candidate = candidateRepository.findById(candidateSkillRequestDTO.getCandidateId())
-                    .orElseThrow(() -> new RuntimeException("Candidate not found"));
-            candidateSkill.setCandidate(candidate);
-        }
-
-        if (candidateSkillRequestDTO.getSkillId() != null) {
-            Skill skill = skillRepository.findById(candidateSkillRequestDTO.getSkillId())
-                    .orElseThrow(() -> new RuntimeException("Skill not found"));
-            candidateSkill.setSkill(skill);
-        }
-
-        candidateSkill.setProficiencyLevel(CandidateSkill.ProficiencyLevel.valueOf(candidateSkillRequestDTO.getProficiencyLevel()));
-
-        CandidateSkill updatedCandidateSkill = candidateSkillRepository.save(candidateSkill);
-        return CandidateSkillMapper.INSTANCE.toCandidateSkillResponseDTO(updatedCandidateSkill);
-    }
-
-    @Override
-    public void deleteCandidateSkill(Long id) {
-        if (!candidateSkillRepository.existsById(id)) {
-            throw new RuntimeException("CandidateSkill not found");
-        }
-        candidateSkillRepository.deleteById(id);
-    }
 }

@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -15,13 +16,17 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        System.out.println("Attempting to load user with email: " + email);
         // Tìm người dùng trong cơ sở dữ liệu bằng email
         Account account = accountRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
-
-        // Trả về đối tượng CustomUserDetails với thông tin từ Account
+        // Kiểm tra nếu tài khoản chưa được xác thực hoặc bị khóa
+//        if (!account.getStatus()) {
+//            throw new UsernameNotFoundException("Account has not been activated yet.");
+//        }
         return new CustomUserDetails(account);
     }
 }

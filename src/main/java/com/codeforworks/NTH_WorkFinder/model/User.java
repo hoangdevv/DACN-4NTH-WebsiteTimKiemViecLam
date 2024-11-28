@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "user")
 public class User extends Base{
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_account", nullable = false)
     private Account account;
 

@@ -20,6 +20,11 @@ public class SkillService implements ISkillService {
 
     @Override
     public SkillResponseDTO createSkill(SkillRequestDTO skillRequestDTO) {
+        // Kiểm tra xem tên kỹ năng đã tồn tại chưa
+        if (skillRepository.existsBySkillName(skillRequestDTO.getSkillName())) {
+            throw new RuntimeException("Tên kỹ năng đã tồn tại");
+        }
+
         Skill skill = SkillMapper.INSTANCE.toSkillEntity(skillRequestDTO);
         Skill savedSkill = skillRepository.save(skill);
         return SkillMapper.INSTANCE.toSkillResponseDTO(savedSkill);
@@ -28,7 +33,7 @@ public class SkillService implements ISkillService {
     @Override
     public SkillResponseDTO getSkillById(Long id) {
         Skill skill = skillRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Skill not found"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy kỹ năng"));
         return SkillMapper.INSTANCE.toSkillResponseDTO(skill);
     }
 
@@ -43,10 +48,14 @@ public class SkillService implements ISkillService {
     @Override
     public SkillResponseDTO updateSkill(Long id, SkillRequestDTO skillRequestDTO) {
         Skill skill = skillRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Skill not found"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy kỹ năng"));
+
+        // Kiểm tra xem tên kỹ năng đã tồn tại chưa
+        if (skillRepository.existsBySkillName(skillRequestDTO.getSkillName())) {
+            throw new RuntimeException("Tên kỹ năng đã tồn tại");
+        }
 
         skill.setSkillName(skillRequestDTO.getSkillName());
-
         Skill updatedSkill = skillRepository.save(skill);
         return SkillMapper.INSTANCE.toSkillResponseDTO(updatedSkill);
     }
@@ -54,7 +63,7 @@ public class SkillService implements ISkillService {
     @Override
     public void deleteSkill(Long id) {
         if (!skillRepository.existsById(id)) {
-            throw new RuntimeException("Skill not found");
+            throw new RuntimeException("Không tìm thấy kỹ năng");
         }
         skillRepository.deleteById(id);
     }

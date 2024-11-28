@@ -46,8 +46,8 @@ public class OAuthUserService extends DefaultOAuth2UserService {
             newAccount.setEmail(email);
             newAccount.setAccountType(Account.AccountType.USER);
 
-            Role userRole = roleRepository.findByRoleName("BASIC_USER")
-                    .orElseThrow(() -> new RuntimeException("Role BASIC_USER không tồn tại"));
+            Role userRole = roleRepository.findByRoleName("ROLE_USER")
+                    .orElseThrow(() -> new RuntimeException("Role ROLE_USER không tồn tại"));
             newAccount.getRoles().add(userRole);
 
             try {

@@ -3,13 +3,19 @@ package com.codeforworks.NTH_WorkFinder.service.impl;
 import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateProfileDTO;
 import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateRequestDTO;
 import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateResponseDTO;
+import com.codeforworks.NTH_WorkFinder.dto.candidate.CandidateSkillRequestDTO;
 import com.codeforworks.NTH_WorkFinder.mapper.CandidateMapper;
 import com.codeforworks.NTH_WorkFinder.model.Candidate;
+import com.codeforworks.NTH_WorkFinder.model.CandidateSkill;
+import com.codeforworks.NTH_WorkFinder.model.Skill;
 import com.codeforworks.NTH_WorkFinder.model.User;
 import com.codeforworks.NTH_WorkFinder.repository.CandidateRepository;
+import com.codeforworks.NTH_WorkFinder.repository.CandidateSkillRepository;
+import com.codeforworks.NTH_WorkFinder.repository.SkillRepository;
 import com.codeforworks.NTH_WorkFinder.repository.UserRepository;
 import com.codeforworks.NTH_WorkFinder.service.ICandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,7 +46,13 @@ public class CandidateService implements ICandidateService {
     }
 
     @Override
-    public CandidateProfileDTO createCandidate(CandidateRequestDTO candidateRequestDTO) {
+    public CandidateProfileDTO createCandidate(CandidateRequestDTO candidateRequestDTO, Long authenticatedUserId) {
+
+        // Kiểm tra xem userId trong request có trùng với userId từ token không
+        if (!candidateRequestDTO.getUserId().equals(authenticatedUserId)) {
+            throw new AccessDeniedException("Không được phép tạo ứng viên cho người dùng khác.");
+        }
+
         if (candidateRepository.existsByUserId(candidateRequestDTO.getUserId())) {
             throw new RuntimeException("Ứng viên đã tồn tại cho User này.");
         }
@@ -50,14 +62,15 @@ public class CandidateService implements ICandidateService {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy User"));
         candidate.setUser(user);
 
+//        Candidate savedCandidate = candidateRepository.save(candidate);
+
+        candidate.setCode("APP-" + String.format("%05d", candidateRepository.count() + 1));
         Candidate savedCandidate = candidateRepository.save(candidate);
 
-        // Thiết lập mã code duy nhất cho Candidate
-        savedCandidate.setCode("APP-" + String.format("%05d", savedCandidate.getId()));
-        savedCandidate = candidateRepository.save(savedCandidate);
 
         return CandidateMapper.INSTANCE.toCandidateProfileDTO(savedCandidate);
     }
+
 
     @Override
     public CandidateProfileDTO updateCandidate(Long id, CandidateRequestDTO candidateRequestDTO) {

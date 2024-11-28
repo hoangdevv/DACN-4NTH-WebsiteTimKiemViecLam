@@ -37,10 +37,7 @@ public class Account extends Base{
     private Boolean status = false; // Chưa xác thực
 
     private Boolean loggedIn = false; // Chưa đăng nhập lần đầu
-//
-//    private String verificationCode; // Thuộc tính để lưu mã xác thực tạm thời
-//
-//    private LocalDateTime otpGeneratedTime; // Thời điểm tạo mã OTP
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

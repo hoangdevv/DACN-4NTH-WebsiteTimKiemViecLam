@@ -33,63 +33,6 @@ public class EmployerService implements IEmployerService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @Override
-//    public void registerEmployer(EmployerSignupRequestDTO dto) {
-//        // Kiểm tra email đã tồn tại chưa và pw
-//        if (accountRepository.findByEmail(dto.getEmail()).isPresent()) {
-//            throw new RuntimeException("Email đã được sử dụng");
-//        }
-//        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
-//            throw new RuntimeException("Mật khẩu và xác nhận mật khẩu không khớp");
-//        }
-//
-//
-//        // Tạo và thiết lập Account
-//        Account account = new Account();
-//        account.setEmail(dto.getEmail());
-//        account.setPassword(passwordEncoder.encode(dto.getPassword())); // Mã hóa mật khẩu
-//        account.setAccountType(Account.AccountType.EMPLOYER); // Đặt loại tài khoản là EMPLOYER
-//        account.setStatus(true);
-//
-//        Account savedAccount = accountRepository.save(account);
-//
-//        // Tạo và thiết lập Employer
-//        Employer employer = new Employer();
-//        employer.setAccount(savedAccount); // Liên kết Account với Employer
-//        employer.setCompanyName(dto.getCompanyName());
-//        employer.setCompanyPhone(dto.getCompanyPhone());
-//        employer.setCompanyAddress(dto.getCompanyAddress());
-//        employer.setLocation(dto.getLocation());
-//
-//        // Tìm Industry dựa trên industryId và gán cho Employer
-//        Industry industry = industryRepository.findById(dto.getIndustryId())
-//                .orElseThrow(() -> new RuntimeException("Không tìm thấy Industry"));
-//        employer.setIndustry(industry);
-//
-//        employerRepository.save(employer);
-//    }
-
-//    public LoginResponseDTO loginEmployer(LoginRequestDTO dto) {
-//        Account account = accountRepository.findByEmail(dto.getEmail())
-//                .orElseThrow(() -> new RuntimeException("Thông tin đăng nhập không hợp lệ"));
-//
-//        // Kiểm tra mật khẩu
-//        if (!passwordEncoder.matches(dto.getPassword(), account.getPassword())) {
-//            throw new RuntimeException("Thông tin đăng nhập không hợp lệ");
-//        }
-//
-//        // Tạo phản hồi đăng nhập
-//        LoginResponseDTO response = new LoginResponseDTO();
-//        response.setId(account.getId());
-//        response.setEmail(account.getEmail());
-//        response.setRole(account.getAccountType().name());
-//
-//        // Nếu có token (JWT), thêm vào response
-//        response.setToken("sample-jwt-token"); // Placeholder cho JWT
-//
-//        return response;
-//    }
-
     @Override
     public EmployerResponseDTO getEmployerById(Long id) {
         Employer employer = employerRepository.findById(id)

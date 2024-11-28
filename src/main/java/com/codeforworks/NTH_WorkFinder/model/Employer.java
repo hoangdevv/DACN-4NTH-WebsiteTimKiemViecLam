@@ -43,6 +43,6 @@ public class Employer extends Base{
     @OneToMany(mappedBy = "employer")
     private List<Job> jobs;
 
-    @OneToMany(mappedBy = "employer")
+    @OneToMany(mappedBy = "employer", fetch = FetchType.EAGER)
     private Set<Subscription> subscriptions;
 }

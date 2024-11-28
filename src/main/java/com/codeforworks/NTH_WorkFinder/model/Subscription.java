@@ -32,4 +32,8 @@ public class Subscription extends Base{
 
     @OneToMany(mappedBy = "subscription")
     private List<Payment> payments; // Mối quan hệ 1-nhiều với Payment
+
+    public Boolean getIsActive() {
+        return this.isActive; // Cung cấp phương thức công khai để truy cập
+    }
 }

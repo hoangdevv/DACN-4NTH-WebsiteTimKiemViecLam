@@ -17,7 +17,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     /**
@@ -35,6 +34,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Lấy JWT từ cookie
         String token = getJwtFromCookie(request);
+        if (token == null) {
+            token = request.getHeader("Authorization");
+            if (token != null && token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+        }
 
         // Kiểm tra tính hợp lệ của token
         if (token != null && jwtTokenProvider.validateToken(token)) {

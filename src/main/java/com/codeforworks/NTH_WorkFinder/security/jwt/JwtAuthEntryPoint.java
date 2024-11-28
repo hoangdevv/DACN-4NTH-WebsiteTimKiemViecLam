@@ -1,11 +1,9 @@
 package com.codeforworks.NTH_WorkFinder.security.jwt;
 
-import com.codeforworks.NTH_WorkFinder.dto.response.ErrorResponse;
+import com.codeforworks.NTH_WorkFinder.dto.error.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;

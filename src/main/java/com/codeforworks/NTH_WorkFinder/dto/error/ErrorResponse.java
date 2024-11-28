@@ -1,4 +1,4 @@
-package com.codeforworks.NTH_WorkFinder.dto.response;
+package com.codeforworks.NTH_WorkFinder.dto.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

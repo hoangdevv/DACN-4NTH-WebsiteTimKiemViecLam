@@ -15,6 +15,7 @@ public class AccountVerificationService {
 
     // Lưu trữ OTP tạm thời với email là key
     private final Map<String, AccountVerificationDTO> otpStorage = new ConcurrentHashMap<>();
+    private final Map<String, LocalDateTime> resendRequestTimestamps = new ConcurrentHashMap<>();
 
     @Autowired
     private EmailService emailService;
@@ -51,6 +52,13 @@ public class AccountVerificationService {
 
     // Phương thức gửi lại mã OTP
     public void resendVerificationCode(String email) throws MessagingException {
+//        LocalDateTime now = LocalDateTime.now();
+//        if (resendRequestTimestamps.containsKey(email) &&
+//                resendRequestTimestamps.get(email).isAfter(now.minusSeconds(30))) {
+//            throw new RuntimeException("Chỉ có thể yêu cầu gửi lại mã sau 30 giây.");
+//        }
+//        resendRequestTimestamps.put(email, now);
+
         AccountVerificationDTO verificationDTO = otpStorage.get(email);
 
         if (verificationDTO == null || verificationDTO.getExpiryTime().isBefore(LocalDateTime.now())) {

@@ -5,6 +5,7 @@ import com.codeforworks.NTH_WorkFinder.dto.auth.login.LoginResponseDTO;
 import com.codeforworks.NTH_WorkFinder.dto.auth.register.EmployerRegisterDTO;
 import com.codeforworks.NTH_WorkFinder.dto.auth.register.UserRegisterDTO;
 import com.codeforworks.NTH_WorkFinder.model.Account;
+import com.codeforworks.NTH_WorkFinder.model.Admin;
 import com.codeforworks.NTH_WorkFinder.repository.AccountRepository;
 import com.codeforworks.NTH_WorkFinder.service.IAuthService;
 import jakarta.mail.MessagingException;
@@ -25,7 +26,6 @@ public class AuthController {
     @Autowired
     private IAuthService authService;
 
-
     @Autowired
     private AccountRepository accountRepository;
 
@@ -38,7 +38,15 @@ public class AuthController {
     @PostMapping("/register/employer")
     public ResponseEntity<String> registerEmployer(@RequestBody EmployerRegisterDTO employerDTO) throws MessagingException {
         authService.registerEmployer(employerDTO);
-        return ResponseEntity.ok("Đăng ký thành công. Vui lòng kiểm tra email để nhận mã xác thực.");
+        return ResponseEntity.ok("Đăng ký tai khoan NTD thành công.");
+    }
+
+
+    @PostMapping("/create/admin")
+//    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Admin> createAdmin( @RequestParam String email, @RequestParam String password) {
+        Admin admin = authService.createAdmin(email, password);
+        return ResponseEntity.status(HttpStatus.CREATED).body(admin);
     }
 
     // Xác thực tài khoản bằng mã OTP
@@ -57,10 +65,9 @@ public class AuthController {
 
     // Đăng nhập
     @PostMapping("/login/{accountType}")
-    public ResponseEntity<LoginResponseDTO> login(
-            @PathVariable("accountType") String accountType,
-            @RequestBody LoginRequestDTO loginRequest,
-            HttpServletResponse response) throws MessagingException {
+    public ResponseEntity<LoginResponseDTO> login( @PathVariable("accountType") String accountType,
+                                                   @RequestBody LoginRequestDTO loginRequest,
+                                                    HttpServletResponse response) throws MessagingException {
 
         // Xác định loại tài khoản từ chuỗi
         Account.AccountType expectedAccountType;
@@ -73,6 +80,30 @@ public class AuthController {
         // Thực hiện đăng nhập
         LoginResponseDTO responseDTO = authService.login(loginRequest, expectedAccountType, response);
         return ResponseEntity.ok(responseDTO);
+    }
+
+    // Yêu cầu thay đổi mật khẩu
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestParam String email) throws MessagingException {
+        boolean isEmailSent = authService.sendPasswordResetEmail(email);
+        if (isEmailSent) {
+            return ResponseEntity.ok("Mã xác minh đã được gửi đến email của bạn.");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email không tồn tại.");
+        }
+    }
+
+    // Đặt lại mật khẩu
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestParam String email,
+                                                @RequestParam String code,
+                                                @RequestParam String newPassword) {
+        boolean isReset = authService.resetPassword(email, code, newPassword);
+        if (isReset) {
+            return ResponseEntity.ok("Mật khẩu đã được thay đổi thành công.");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mã xác minh không hợp lệ hoặc đã hết hạn.");
+        }
     }
 
     //lấy thông tin người dùng đang đăng nhập oauth2
@@ -92,4 +123,6 @@ public class AuthController {
         Account userAccount = account.get();
         return ResponseEntity.ok(userAccount);
     }
+
+
 }
